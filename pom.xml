@@ -5,11 +5,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.tenut.asymmetric-key-generator</groupId>
+  <groupId>com.tenut.AsymmetricKeyGenerator</groupId>
   <artifactId>asymmetric-key-generator</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1</version>
 
-  <name>asymmetric-key-generator</name>
+  <name>Asymmetric Key Generator</name>
   <url>https://10undertiber.com</url>
 
   <properties>

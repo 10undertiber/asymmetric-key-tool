@@ -1,4 +1,4 @@
-package com.tenut.asymmetric-key-generator;
+package com.tenut.AsymmetricKeyGenerator;
 
 import static org.junit.Assert.assertTrue;
 
@@ -7,14 +7,12 @@ import org.junit.Test;
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-{
+public class AsymmetricKeyGeneratorTest {
     /**
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+    public void shouldAnswerWithTrue() {
+        assertTrue(true);
     }
 }

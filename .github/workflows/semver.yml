@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: 10undertiber/semver:latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Git config Setup
+        run: |
+          git config --global user.email "ci@10undertiber.com"
+          git config --global user.name "10 Under Tiber CI"
+      - name: Calling SemVer
+        run: |
+          semver
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

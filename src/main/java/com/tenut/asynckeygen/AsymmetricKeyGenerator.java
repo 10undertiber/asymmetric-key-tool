@@ -21,7 +21,27 @@ package com.tenut.asynckeygen;
 
 public class AsymmetricKeyGenerator {
 
-  public static AsymmetricKeyPair newKeyPair(AsymmetricKeyAlgorithm algorithm) {
-    return new AsymmetricKeyPair();
+  public static AsymmetricKeyPair newKeyPair(AsymmetricKeyAlgorithm algorithm)
+      throws UnknownAsymmetricKeyAlgorithmException {
+    AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
+
+    return builder.newKeyPair();
+  }
+
+  public static AsymmetricKeyPair loadKeyPair(AsymmetricKeyAlgorithm algorithm, String publicKey, String privateKey)
+      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
+    AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
+
+    return builder.loadKeyPair(publicKey, privateKey);
+  }
+
+  private static AsymmetricKeyPairBuilder getBuilder(AsymmetricKeyAlgorithm algorithm)
+      throws UnknownAsymmetricKeyAlgorithmException {
+    switch (algorithm) {
+      case ASYMMETRIC_KEY_ALGORITHM_RS256:
+        return new RS256KeyPairBuilder();
+      default:
+        throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
+    }
   }
 }

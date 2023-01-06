@@ -1,4 +1,4 @@
-# Shamir's Secret Sharing
+# Asymmetric Key Generator
 
 [![CircleCI](https://circleci.com/gh/10undertiber/asymmetric-key-generator.svg?style=svg)](https://circleci.com/gh/10undertiber/asymmetric-key-generator)
 
@@ -8,13 +8,11 @@ A Java implementation of [Asymmetric cryptography](https://en.wikipedia.org/wiki
 
 ```xml
 <dependency>
-  <groupId>com.tenut.asynckeygen</groupId>
-  <artifactId>asymmetric-key-generator</artifactId>
+  <groupId>com.tenut</groupId>
+  <artifactId>asynckeygen</artifactId>
   <version>0.0.1</version>
 </dependency>
 ```
-
-*Note: module name for Java 9+ is `com.tenut.asynckeygen`.*
 
 ## Use the thing
 
@@ -23,6 +21,8 @@ import com.tenut.asynckeygen.AsymmetricKeyGenerator;
 
 class Example {
   void doIt() {
+    AsymmetricKeyPair key = AsymmetricKeyGenerator.newKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_R256);
+    
     System.out.println("Hello world!");
   } 
 }
@@ -34,6 +34,6 @@ class Example {
 
 ## License
 
-Copyright © 2023 10 Under Tiber
+Copyright © 2023 10 Under Tiber Studio
 
 Distributed under the Apache License 2.0.

@@ -19,14 +19,55 @@
 
 package com.tenut.asynckeygen;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 public class AsymmetricKeyGeneratorTest {
+
+  private static final String Base64Regex = "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$";
+
   @Test
-  public void shouldAnswerWithTrue() {
-    AsymmetricKeyPair key = AsymmetricKeyGenerator.newKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_R256);
-    assertNotNull(key);
+  public void shouldPass() throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
+    AsymmetricKeyAlgorithm[] algorithms = { AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256 };
+
+    for (AsymmetricKeyAlgorithm asymmetricKeyAlgorithm : algorithms) {
+
+      assertThatCode(() -> AsymmetricKeyGenerator.newKeyPair(
+          asymmetricKeyAlgorithm))
+          .doesNotThrowAnyException();
+
+      AsymmetricKeyPair generatedKeyPair = AsymmetricKeyGenerator
+          .newKeyPair(asymmetricKeyAlgorithm);
+
+      assertNotNull(generatedKeyPair);
+
+      String generatedPrivateKey = generatedKeyPair.getPrivateKey();
+      String generatedPublicKey = generatedKeyPair.getPublicKey();
+
+      assertTrue(generatedPrivateKey.matches(Base64Regex));
+      assertTrue(generatedPublicKey.matches(Base64Regex));
+
+      assertThatCode(() -> AsymmetricKeyGenerator.loadKeyPair(
+          asymmetricKeyAlgorithm,
+          generatedPublicKey, generatedPrivateKey))
+          .doesNotThrowAnyException();
+
+      AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(
+          asymmetricKeyAlgorithm,
+          generatedPublicKey, generatedPrivateKey);
+
+      assertNotNull(loadedKeyPair);
+
+      String loadedPrivateKey = loadedKeyPair.getPrivateKey();
+      String loadedPublicKey = loadedKeyPair.getPublicKey();
+
+      assertEquals(loadedPublicKey, generatedPublicKey);
+      assertEquals(loadedPrivateKey, generatedPrivateKey);
+    }
+
   }
 }

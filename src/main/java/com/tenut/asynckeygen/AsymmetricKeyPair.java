@@ -21,7 +21,19 @@ package com.tenut.asynckeygen;
 
 public class AsymmetricKeyPair {
 
-  public AsymmetricKeyPair() {
+  private PrivateKey privateKey;
+  private PublicKey publicKey;
 
+  AsymmetricKeyPair(PublicKey publicKey, PrivateKey privateKey) {
+    this.privateKey = privateKey;
+    this.publicKey = publicKey;
+  }
+
+  public String getPrivateKey() throws InvalidAsymmetricKeyException {
+    return privateKey.encode();
+  }
+
+  public String getPublicKey() throws InvalidAsymmetricKeyException {
+    return publicKey.encode();
   }
 }

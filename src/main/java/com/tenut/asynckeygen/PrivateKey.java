@@ -8,7 +8,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,6 +17,19 @@
  * limitations under the License.
  */
 
-module com.tenut.asynckeygen {
-  exports com.tenut.asynckeygen;
+package com.tenut.asynckeygen;
+
+import java.security.KeyFactory;
+import java.security.KeyPair;
+
+abstract public class PrivateKey extends Key {
+
+  PrivateKey(KeyFactory factory, KeyPair keyPair) {
+    super(factory, keyPair);
+  }
+
+  PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException {
+    super(factory, encodedKey);
+  }
+
 }

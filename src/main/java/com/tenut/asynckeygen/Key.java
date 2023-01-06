@@ -19,6 +19,29 @@
 
 package com.tenut.asynckeygen;
 
-public enum AsymmetricKeyAlgorithm {
-  ASYMMETRIC_KEY_ALGORITHM_RS256;
+import java.security.KeyFactory;
+import java.security.KeyPair;
+
+abstract class Key {
+  Key(KeyFactory factory, KeyPair keyPair) {
+    newKey(factory, keyPair);
+  }
+
+  Key(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException {
+    decode(factory, encodedKey);
+  }
+
+  void decode(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException {
+    decodeKey(factory, encoded);
+  }
+
+  String encode() throws InvalidAsymmetricKeyException {
+    return encodeKey();
+  }
+
+  abstract void newKey(KeyFactory factory, KeyPair keyPair);
+
+  abstract void decodeKey(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException;
+
+  abstract String encodeKey();
 }

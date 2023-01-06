@@ -4,14 +4,45 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.tenut.AsymmetricKeyGenerator</groupId>
-  <artifactId>asymmetric-key-generator</artifactId>
-  <version>0.0.1</version>
+  <groupId>com.tenut</groupId>
+  <artifactId>asynckeygen</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
 
   <name>Asymmetric Key Generator</name>
+  <description>Asymmetric Key Generator</description>
   <url>https://10undertiber.com</url>
 
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>asymmetric-key-generator</id>
+      <name>10 Under Tiber Studio</name>
+      <organization>10 Under Tiber Studio</organization>
+      <email>developers@10undertiber.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/10undertiber/asymmetric-key-generator.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/10undertiber/asymmetric-key-generator.git</developerConnection>
+    <url>https://github.com/10undertiber/asymmetric-key-generator</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>github</system>
+    <url>https://github.com/10undertiber/asymmetric-key-generator/issues</url>
+  </issueManagement>
+
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
     <maven.required.version>
       3.5.4</maven.required.version>
@@ -48,69 +79,6 @@
   <build>
     <pluginManagement>
       <plugins>
-        <!-- Sets minimal Maven version -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>${maven.enforcer.plugin.version}</version>
-          <executions>
-            <execution>
-              <id>enforce-maven</id>
-              <goals>
-                <goal>enforce</goal>
-              </goals>
-              <configuration>
-                <rules>
-                  <requireMavenVersion>
-                    <version>
-                      ${maven.required.version}</version>
-                    <message>You
-                      need Maven ${maven.required.version} or higher</message>
-                  </requireMavenVersion>
-                </rules>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
-        <!-- Restricts the Java version -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.plugin.version}</version>
-          <configuration>
-            <source>
-              1.9</source>
-            <target>1.9</target>
-            <compilerArgument>
-              -Xlint:unchecked</compilerArgument>
-          </configuration>
-        </plugin>
-
-        <!-- Checks copyright / license headers -->
-        <plugin>
-          <groupId>org.glassfish.copyright</groupId>
-          <artifactId>glassfish-copyright-maven-plugin</artifactId>
-          <version>${glassfish.copyright.maven.plugin.version}</version>
-          <configuration>
-            <excludeFile>
-              config/copyright-exclude</excludeFile>
-            <!--svn|mercurial|git - defaults to svn -->
-            <scm>git</scm>
-            <!-- turn on/off debugging -->
-            <debug>false</debug>
-            <!-- skip files not under SCM -->
-            <scmOnly>
-              true</scmOnly>
-            <!-- turn off warnings -->
-            <warn>true</warn>
-            <!-- for use with repair -->
-            <update>false</update>
-            <!-- check that year is correct -->
-            <ignoreYear>false</ignoreYear>
-            <templateFile>config/copyright-apache.txt</templateFile>
-          </configuration>
-        </plugin>
 
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -126,6 +94,87 @@
       </plugins>
     </pluginManagement>
     <plugins>
+
+      <!-- Checks copyright / license headers -->
+      <plugin>
+        <groupId>org.glassfish.copyright</groupId>
+        <artifactId>glassfish-copyright-maven-plugin</artifactId>
+        <version>${glassfish.copyright.maven.plugin.version}</version>
+        <configuration>
+          <excludeFile>
+            config/copyright-exclude</excludeFile>
+          <!--svn|mercurial|git - defaults to svn -->
+          <scm>git</scm>
+          <!-- turn on/off debugging -->
+          <debug>false</debug>
+          <!-- skip files not under SCM -->
+          <scmOnly>
+            true</scmOnly>
+          <!-- turn off warnings -->
+          <warn>true</warn>
+          <!-- for use with repair -->
+          <update>false</update>
+          <!-- check that year is correct -->
+          <ignoreYear>false</ignoreYear>
+          <templateFile>config/copyright-apache.txt</templateFile>
+        </configuration>
+      </plugin>
+      <!-- Sets minimal Maven version -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven.enforcer.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>
+                    ${maven.required.version}</version>
+                  <message>You
+                    need Maven ${maven.required.version} or higher</message>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Restricts the Java version -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>
+            1.9</source>
+          <target>1.9</target>
+          <compilerArgument>
+            -Xlint:unchecked</compilerArgument>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>

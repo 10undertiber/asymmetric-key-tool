@@ -8,9 +8,9 @@ A Java implementation of [Asymmetric cryptography](https://en.wikipedia.org/wiki
 
 ```xml
 <dependency>
-  <groupId>com.tenut</groupId>
+  <groupId>com.tenut.asynckeygen</groupId>
   <artifactId>asymmetric-key-generator</artifactId>
-  <version>0.7.0</version>
+  <version>0.0.1</version>
 </dependency>
 ```
 

@@ -24,6 +24,11 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run:
+          name: Install tools
+          command: |
+            apt update
+            apt -y install --no-install-recommends git
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}

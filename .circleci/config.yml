@@ -1,0 +1,137 @@
+#
+# Copyright © 2023 10 Under Tiber Studio
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+version: 2.1
+
+executors:
+  maven:
+    working_directory: ~/repo
+    shell: /bin/bash -e
+    docker:
+      - image: maven:3-jdk-12-alpine
+
+jobs:
+  build:
+    executor: maven
+    environment:
+      MAVEN_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-build-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-build-dependencies-
+      - run: mvn clean package -DskipTests -Dmaven.test.skip=true --settings maven/settings.xml
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-build-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
+
+  test:
+    executor: maven
+    environment:
+      MAVEN_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-test-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-test-dependencies-
+      - run: mvn clean verify --settings maven/settings.xml
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-test-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
+  publish:
+    executor: maven
+    environment:
+      MAVEN_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-build-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-build-dependencies-
+      - run:
+          name: Setup Maven package
+          command: |
+            cat pom.xml | sed "s/0.0.1-SNAPSHOT/${CIRCLE_TAG}/g" > pom.xml.new
+            cat pom.xml.new > pom.xml
+            rm pom.xml.new
+      - run:
+          name: Publish Maven package
+          command: |
+            export PATH="$PATH:$HOME/.local/bin"
+            export GITHUB_TOKEN=${GITHUB_ACCESS_TOKEN}
+            mvn clean deploy --batch-mode --settings maven/settings.xml
+
+workflows:
+  push:
+    jobs:
+      - build:
+          context: build
+          filters:
+            branches:
+              ignore: master
+      - test:
+          context: test
+          filters:
+            branches:
+              ignore: master
+          requires:
+            - build
+
+  release:
+    jobs:
+      - build:
+          context: build
+          filters:
+            tags:
+              only: /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/
+            branches:
+              ignore: /.*/
+      - test:
+          context: test
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/
+            branches:
+              ignore: /.*/
+      - publish:
+          context: deploy
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/
+            branches:
+              ignore: /.*/

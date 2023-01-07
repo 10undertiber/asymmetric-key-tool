@@ -1,28 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.tenut.asymmetric-key-generator</groupId>
-  <artifactId>asymmetric-key-generator</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <groupId>com.tenut</groupId>
+  <artifactId>asynckeygen</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
 
-  <name>asymmetric-key-generator</name>
+  <name>Asymmetric Key Generator</name>
+  <description>Asymmetric Key Generator</description>
   <url>https://10undertiber.com</url>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>asymmetric-key-generator</id>
+      <name>10 Under Tiber Studio</name>
+      <organization>10 Under Tiber Studio</organization>
+      <email>developers@10undertiber.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/10undertiber/asymmetric-key-generator.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/10undertiber/asymmetric-key-generator.git</developerConnection>
+    <url>https://github.com/10undertiber/asymmetric-key-generator</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>github</system>
+    <url>https://github.com/10undertiber/asymmetric-key-generator/issues</url>
+  </issueManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+    <maven.required.version>
+      3.5.4</maven.required.version>
+    <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
+    <glassfish.copyright.maven.plugin.version>2.3</glassfish.copyright.maven.plugin.version>
+    <puppycrawl.checkstyle.plugin>
+      8.44</puppycrawl.checkstyle.plugin>
+    <junit.version>
+      4.11</junit.version>
+    <assertj.version>
+      3.24.0</assertj.version>
+    <spotbugs.version>4.7.3</spotbugs.version>
+    <maven.spotbugs.plugin.version>4.7.2.1</maven.spotbugs.plugin.version>
+    <findsecbugs.plugin.version>1.12.0</findsecbugs.plugin.version>
+    <maven.enforcer.plugin.version>
+      3.0.0-M3</maven.enforcer.plugin.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -36,52 +85,157 @@
   </distributionManagement>
 
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to
-      parent pom) -->
+    <pluginManagement>
       <plugins>
-        <!-- clean lifecycle, see
-        https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+
         <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <!-- default lifecycle, jar packaging: see
-        https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        <!-- site lifecycle, see
-        https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${maven.checkstyle.plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>com.puppycrawl.tools</groupId>
+              <artifactId>checkstyle</artifactId>
+              <version>${puppycrawl.checkstyle.plugin}</version>
+            </dependency>
+          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+
+      <!-- Checks copyright / license headers -->
+      <plugin>
+        <groupId>org.glassfish.copyright</groupId>
+        <artifactId>glassfish-copyright-maven-plugin</artifactId>
+        <version>${glassfish.copyright.maven.plugin.version}</version>
+        <configuration>
+          <excludeFile>
+            config/copyright-exclude</excludeFile>
+          <!--svn|mercurial|git - defaults to svn -->
+          <scm>git</scm>
+          <!-- turn on/off debugging -->
+          <debug>false</debug>
+          <!-- skip files not under SCM -->
+          <scmOnly>
+            true</scmOnly>
+          <!-- turn off warnings -->
+          <warn>true</warn>
+          <!-- for use with repair -->
+          <update>false</update>
+          <!-- check that year is correct -->
+          <ignoreYear>false</ignoreYear>
+          <templateFile>config/copyright-apache.txt</templateFile>
+        </configuration>
+      </plugin>
+      <!-- Sets minimal Maven version -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>${maven.enforcer.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>
+                    ${maven.required.version}</version>
+                  <message>You
+                    need Maven ${maven.required.version} or higher</message>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Restricts the Java version -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
+        <configuration>
+          <source>
+            1.9</source>
+          <target>1.9</target>
+          <compilerArgument>
+            -Xlint:unchecked</compilerArgument>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <minimizeJar>true</minimizeJar>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${maven.spotbugs.plugin.version}</version>
+        <configuration>
+          <includeFilterFile>
+            spotbugs.xml</includeFilterFile>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>
+                ${findsecbugs.plugin.version}</version>
+            </plugin>
+          </plugins>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>checkstyle-verification</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectories>
+            <sourceDirectory>
+              ${project.basedir}/src/main/java</sourceDirectory>
+          </sourceDirectories>
+          <testSourceDirectories>
+            <testSourceDirectory>
+              ${project.basedir}/src/test/java</testSourceDirectory>
+          </testSourceDirectories>
+          <encoding>
+            UTF-8</encoding>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+          <violationSeverity>warning</violationSeverity>
+          <consoleOutput>true</consoleOutput>
+          <includeResources>
+            true</includeResources>
+          <includeTestResources>true</includeTestResources>
+          <resourceIncludes>
+            **/*.properties,**/*.conf,**/*.json,**/*.xml</resourceIncludes>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <configLocation>
+            checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

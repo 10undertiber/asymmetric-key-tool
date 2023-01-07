@@ -40,8 +40,8 @@ class Example {
     boolean verified = generatedKeyPair.verify(plainMessage, signature);
 
     // Export private and public key
-    String privateKey = key.getPrivateKey().asBase64String();
-    String publicKey = key.getPublicKey().asBase64String();
+    String privateKey = key.getPrivateKey().toBase64();
+    String publicKey = key.getPublicKey().toBase64();
 
     // Load an existing key pair
     AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_R256, publicKey, privateKey);

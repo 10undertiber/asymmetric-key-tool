@@ -24,7 +24,6 @@ import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 public class RS256PublicKey extends PublicKey {
 
@@ -44,9 +43,9 @@ public class RS256PublicKey extends PublicKey {
   }
 
   @Override
-  void decodeKey(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException {
+  void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException {
     try {
-      X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(Base64.getDecoder().decode(encoded));
+      X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(encoded);
       this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
     } catch (InvalidKeySpecException | NullPointerException e) {
       throw new InvalidAsymmetricKeyException("Public key format not valid");
@@ -54,7 +53,7 @@ public class RS256PublicKey extends PublicKey {
   }
 
   @Override
-  String encodeKey() {
-    return Base64.getEncoder().encodeToString(key.getEncoded());
+  byte[] encodeKey() {
+    return key.getEncoded();
   }
 }

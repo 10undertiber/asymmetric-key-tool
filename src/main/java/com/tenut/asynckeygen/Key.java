@@ -21,6 +21,7 @@ package com.tenut.asynckeygen;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.util.Base64;
 
 abstract class Key {
   Key(KeyFactory factory, KeyPair keyPair) {
@@ -32,16 +33,16 @@ abstract class Key {
   }
 
   void decode(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException {
-    decodeKey(factory, encoded);
+    decodeKey(factory, Base64.getDecoder().decode(encoded));
   }
 
   String encode() throws InvalidAsymmetricKeyException {
-    return encodeKey();
+    return Base64.getEncoder().encodeToString(encodeKey());
   }
 
   abstract void newKey(KeyFactory factory, KeyPair keyPair);
 
-  abstract void decodeKey(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException;
+  abstract void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException;
 
-  abstract String encodeKey();
+  abstract byte[] encodeKey();
 }

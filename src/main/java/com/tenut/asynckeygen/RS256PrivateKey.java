@@ -24,7 +24,6 @@ import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
 
 public class RS256PrivateKey extends PrivateKey {
 
@@ -44,9 +43,9 @@ public class RS256PrivateKey extends PrivateKey {
   }
 
   @Override
-  void decodeKey(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException {
+  void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException {
     try {
-      PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(encoded));
+      PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(encoded);
       this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
     } catch (InvalidKeySpecException | NullPointerException e) {
       throw new InvalidAsymmetricKeyException("Private key format not valid");
@@ -54,8 +53,8 @@ public class RS256PrivateKey extends PrivateKey {
   }
 
   @Override
-  String encodeKey() {
-    return Base64.getEncoder().encodeToString(key.getEncoded());
+  byte[] encodeKey() {
+    return key.getEncoded();
   }
 
 }

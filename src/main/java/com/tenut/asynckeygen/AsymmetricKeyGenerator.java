@@ -19,7 +19,7 @@
 
 package com.tenut.asynckeygen;
 
-public class AsymmetricKeyGenerator {
+final public class AsymmetricKeyGenerator {
 
   public static AsymmetricKeyPair newKeyPair(AsymmetricKeyAlgorithm algorithm)
       throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
@@ -33,6 +33,20 @@ public class AsymmetricKeyGenerator {
     AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
 
     return builder.loadKeyPair(publicKey, privateKey);
+  }
+
+  public static PrivateKey loadPrivateKey(AsymmetricKeyAlgorithm algorithm, String privateKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
+    AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
+
+    return builder.loadPrivateKey(privateKey);
+  }
+
+  public static PublicKey loadPublicKey(AsymmetricKeyAlgorithm algorithm, String publicKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
+    AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
+
+    return builder.loadPublicKey(publicKey);
   }
 
   private static AsymmetricKeyPairBuilder getBuilder(AsymmetricKeyAlgorithm algorithm)

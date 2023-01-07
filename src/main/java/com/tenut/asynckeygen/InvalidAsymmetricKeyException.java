@@ -19,7 +19,7 @@
 
 package com.tenut.asynckeygen;
 
-public class InvalidAsymmetricKeyException extends Exception {
+final public class InvalidAsymmetricKeyException extends Exception {
   public InvalidAsymmetricKeyException(String errorMessage) {
     super(errorMessage);
   }

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class AsymmetricKeyGeneratorTest {
+final public class AsymmetricKeyGeneratorTest {
 
   private static final String Base64Regex = "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$";
 
@@ -48,8 +48,8 @@ public class AsymmetricKeyGeneratorTest {
 
       assertNotNull(generatedKeyPair);
 
-      String generatedPrivateKey = generatedKeyPair.getPrivateKey();
-      String generatedPublicKey = generatedKeyPair.getPublicKey();
+      String generatedPrivateKey = generatedKeyPair.getPrivateKey().asBase64String();
+      String generatedPublicKey = generatedKeyPair.getPublicKey().asBase64String();
 
       assertTrue(generatedPrivateKey.matches(Base64Regex));
       assertTrue(generatedPublicKey.matches(Base64Regex));
@@ -79,11 +79,19 @@ public class AsymmetricKeyGeneratorTest {
 
       assertNotNull(loadedKeyPair);
 
-      String loadedPrivateKey = loadedKeyPair.getPrivateKey();
-      String loadedPublicKey = loadedKeyPair.getPublicKey();
+      String loadedPrivateKey = loadedKeyPair.getPrivateKey().asBase64String();
+      String loadedPublicKey = loadedKeyPair.getPublicKey().asBase64String();
 
       assertEquals(loadedPublicKey, generatedPublicKey);
       assertEquals(loadedPrivateKey, generatedPrivateKey);
+
+      String singlePrivateKey = AsymmetricKeyGenerator.loadPrivateKey(asymmetricKeyAlgorithm, loadedPrivateKey)
+          .asBase64String();
+      String singlePublicKey = AsymmetricKeyGenerator.loadPublicKey(asymmetricKeyAlgorithm,
+          loadedPublicKey).asBase64String();
+
+      assertEquals(singlePublicKey, generatedPublicKey);
+      assertEquals(singlePrivateKey, generatedPrivateKey);
 
       String plainMessage = "Hello, World!";
 

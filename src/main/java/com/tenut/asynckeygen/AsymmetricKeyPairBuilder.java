@@ -24,4 +24,10 @@ public interface AsymmetricKeyPairBuilder {
 
   AsymmetricKeyPair loadKeyPair(String publicKey, String privateKey)
       throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException;
+
+  PrivateKey loadPrivateKey(String privateKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException;
+
+  PublicKey loadPublicKey(String publicKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException;
 }

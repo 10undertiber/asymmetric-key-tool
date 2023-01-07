@@ -63,4 +63,28 @@ public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
     }
   }
 
+  @Override
+  public PrivateKey loadPrivateKey(String privateKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
+    try {
+      KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
+
+      return new RS256PrivateKey(factory, privateKey);
+    } catch (NoSuchAlgorithmException e) {
+      throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
+    }
+  }
+
+  @Override
+  public PublicKey loadPublicKey(String publicKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
+    try {
+      KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
+
+      return new RS256PublicKey(factory, publicKey);
+    } catch (NoSuchAlgorithmException e) {
+      throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
+    }
+  }
+
 }

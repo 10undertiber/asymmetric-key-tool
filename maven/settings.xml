@@ -16,7 +16,7 @@
         </repository>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/10undertiber/asymmetric-key-generator</url>
+          <url>https://maven.pkg.github.com/10undertiber/asymmetric-key-tool</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>

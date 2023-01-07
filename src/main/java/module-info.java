@@ -17,6 +17,6 @@
  * limitations under the License.
  */
 
-module com.tenut.asynckeygen {
-  exports com.tenut.asynckeygen;
+module com.tenut.asynckeytool {
+  exports com.tenut.asynckeytool;
 }

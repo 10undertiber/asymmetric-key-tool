@@ -17,8 +17,17 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeytool;
+package com.tenut.asymmetrickeytool;
 
-public enum AsymmetricKeyAlgorithm {
-  ASYMMETRIC_KEY_ALGORITHM_RS256;
+public interface AsymmetricKeyPairBuilder {
+  AsymmetricKeyPair newKeyPair() throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException;
+
+  AsymmetricKeyPair loadKeyPair(String publicKey, String privateKey)
+      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException;
+
+  PrivateKey loadPrivateKey(String privateKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException;
+
+  PublicKey loadPublicKey(String publicKey)
+      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException;
 }

@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.tenut</groupId>
-  <artifactId>asynckeytool</artifactId>
+  <artifactId>asymmetrickeytool</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
   <name>Asymmetric Key Tool</name>

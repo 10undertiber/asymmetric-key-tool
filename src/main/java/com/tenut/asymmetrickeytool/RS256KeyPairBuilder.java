@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeytool;
+package com.tenut.asymmetrickeytool;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;

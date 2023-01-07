@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeytool;
+package com.tenut.asymmetrickeytool;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

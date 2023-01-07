@@ -17,6 +17,6 @@
  * limitations under the License.
  */
 
-module com.tenut.asynckeytool {
-  exports com.tenut.asynckeytool;
+module com.tenut.asymmetrickeytool {
+  exports com.tenut.asymmetrickeytool;
 }

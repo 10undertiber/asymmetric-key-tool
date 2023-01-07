@@ -45,8 +45,8 @@ public class AsymmetricKeyGeneratorTest {
 
       assertNotNull(generatedKeyPair);
 
-      String generatedPrivateKey = generatedKeyPair.getPrivateKey();
-      String generatedPublicKey = generatedKeyPair.getPublicKey();
+      String generatedPrivateKey = generatedKeyPair.getPrivateKey().asBase64String();
+      String generatedPublicKey = generatedKeyPair.getPublicKey().asBase64String();
 
       assertTrue(generatedPrivateKey.matches(Base64Regex));
       assertTrue(generatedPublicKey.matches(Base64Regex));
@@ -62,11 +62,19 @@ public class AsymmetricKeyGeneratorTest {
 
       assertNotNull(loadedKeyPair);
 
-      String loadedPrivateKey = loadedKeyPair.getPrivateKey();
-      String loadedPublicKey = loadedKeyPair.getPublicKey();
+      String loadedPrivateKey = loadedKeyPair.getPrivateKey().asBase64String();
+      String loadedPublicKey = loadedKeyPair.getPublicKey().asBase64String();
 
       assertEquals(loadedPublicKey, generatedPublicKey);
       assertEquals(loadedPrivateKey, generatedPrivateKey);
+
+      String plainMessage = "Hello, World!";
+      String encryptedMessage = generatedKeyPair.getPrivateKey().encrypt(plainMessage);
+      String decryptedMessage = loadedKeyPair.getPrivateKey().decrypt(encryptedMessage);
+
+      assertEquals(plainMessage, decryptedMessage);
+
+      assertTrue(loadedKeyPair.getPublicKey().verify(plainMessage, encryptedMessage));
     }
 
   }

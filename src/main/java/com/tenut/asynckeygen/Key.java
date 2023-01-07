@@ -36,7 +36,7 @@ abstract class Key {
     decodeKey(factory, Base64.getDecoder().decode(encoded));
   }
 
-  String encode() throws InvalidAsymmetricKeyException {
+  String asBase64String() throws InvalidAsymmetricKeyException {
     return Base64.getEncoder().encodeToString(encodeKey());
   }
 
@@ -45,4 +45,10 @@ abstract class Key {
   abstract void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException;
 
   abstract byte[] encodeKey();
+
+  public abstract String encrypt(String input);
+
+  public abstract String decrypt(String input);
+
+  public abstract boolean verify(String input, String output);
 }

@@ -56,4 +56,22 @@ public class RS256PublicKey extends PublicKey {
   byte[] encodeKey() {
     return key.getEncoded();
   }
+
+  @Override
+  public String encrypt(String input) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String decrypt(String input) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public boolean verify(String input, String output) {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }

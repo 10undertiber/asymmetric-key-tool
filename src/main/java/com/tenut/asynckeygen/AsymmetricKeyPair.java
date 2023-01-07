@@ -29,11 +29,11 @@ public class AsymmetricKeyPair {
     this.publicKey = publicKey;
   }
 
-  public String getPrivateKey() throws InvalidAsymmetricKeyException {
-    return privateKey.encode();
+  public PrivateKey getPrivateKey() throws InvalidAsymmetricKeyException {
+    return privateKey;
   }
 
-  public String getPublicKey() throws InvalidAsymmetricKeyException {
-    return publicKey.encode();
+  public PublicKey getPublicKey() throws InvalidAsymmetricKeyException {
+    return publicKey;
   }
 }

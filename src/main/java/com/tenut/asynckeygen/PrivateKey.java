@@ -31,5 +31,4 @@ abstract public class PrivateKey extends Key {
   PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException {
     super(factory, encodedKey);
   }
-
 }

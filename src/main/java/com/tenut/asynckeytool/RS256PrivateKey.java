@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;

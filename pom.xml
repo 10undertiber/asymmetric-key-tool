@@ -8,8 +8,8 @@
   <artifactId>asynckeytool</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>Asymmetric Key Generator</name>
-  <description>Asymmetric Key Generator</description>
+  <name>Asymmetric Key Tool</name>
+  <description>Asymmetric Key Tool</description>
   <url>https://10undertiber.com</url>
 
   <licenses>

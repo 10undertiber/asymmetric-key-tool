@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 public enum AsymmetricKeyAlgorithm {
   ASYMMETRIC_KEY_ALGORITHM_RS256;

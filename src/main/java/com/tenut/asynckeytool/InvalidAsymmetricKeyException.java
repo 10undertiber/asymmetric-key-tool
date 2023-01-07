@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 final public class InvalidAsymmetricKeyException extends Exception {
   public InvalidAsymmetricKeyException(String errorMessage) {

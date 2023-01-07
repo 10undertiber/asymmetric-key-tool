@@ -50,7 +50,7 @@ public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
 
   @Override
   public AsymmetricKeyPair loadKeyPair(String publicKey, String privateKey)
-      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
+      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException {
     try {
       KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
 

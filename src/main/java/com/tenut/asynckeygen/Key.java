@@ -29,13 +29,17 @@ abstract class Key {
     newKey(factory, keyPair);
   }
 
-  Key(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
-      UnknownAsymmetricKeyAlgorithmException {
+  Key(KeyFactory factory, String encodedKey) throws InvalidEncodingException, InvalidAsymmetricKeyException,
+      UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     decode(factory, encodedKey);
   }
 
-  void decode(KeyFactory factory, String encoded) throws InvalidAsymmetricKeyException {
-    decodeKey(factory, Base64.getDecoder().decode(encoded));
+  void decode(KeyFactory factory, String encoded) throws InvalidEncodingException, InvalidAsymmetricKeyException {
+    try {
+      decodeKey(factory, Base64.getDecoder().decode(encoded));
+    } catch (IllegalArgumentException e) {
+      throw new InvalidEncodingException("Key encoding not valid");
+    }
   }
 
   String asBase64String() throws InvalidAsymmetricKeyException {
@@ -47,20 +51,4 @@ abstract class Key {
   abstract void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException;
 
   abstract byte[] encodeKey();
-
-  public String sign(String input) throws UnknownAsymmetricKeyAlgorithmException,
-      InvalidAsymmetricKeyException, InvalidEncodingException {
-    return Base64.getEncoder().encodeToString(signData(input));
-  }
-
-  public boolean verify(String input, String output) throws UnknownAsymmetricKeyAlgorithmException,
-      InvalidAsymmetricKeyException, InvalidEncodingException {
-    return verifyData(input, output);
-  }
-
-  abstract byte[] signData(String input) throws InvalidAsymmetricKeyException,
-      InvalidEncodingException;
-
-  abstract boolean verifyData(String input, String output) throws InvalidAsymmetricKeyException,
-      InvalidEncodingException;
 }

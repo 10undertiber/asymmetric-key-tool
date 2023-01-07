@@ -25,6 +25,7 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
+import java.security.SignatureException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -49,7 +50,7 @@ public class RS256PrivateKey extends PrivateKey {
   }
 
   RS256PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
-      UnknownAsymmetricKeyAlgorithmException {
+      UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
 
@@ -91,15 +92,13 @@ public class RS256PrivateKey extends PrivateKey {
   }
 
   @Override
-  boolean verifyData(String input, String output) throws InvalidAsymmetricKeyException {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  byte[] signData(String input) throws InvalidAsymmetricKeyException, InvalidEncodingException {
-    // TODO Auto-generated method stub
-    return null;
+  byte[] signData(String input) throws InvalidEncodingException {
+    try {
+      this.signature.update(input.getBytes("UTF-8"));
+      return this.signature.sign();
+    } catch (SignatureException | UnsupportedEncodingException e) {
+      throw new InvalidEncodingException("Signature encoding not supported");
+    }
   }
 
   @Override

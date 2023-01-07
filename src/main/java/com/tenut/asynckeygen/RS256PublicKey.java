@@ -50,7 +50,7 @@ public class RS256PublicKey extends PublicKey {
   }
 
   RS256PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
-      UnknownAsymmetricKeyAlgorithmException {
+      UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
 
@@ -66,7 +66,6 @@ public class RS256PublicKey extends PublicKey {
       this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
       this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
     } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
-      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }
@@ -83,7 +82,6 @@ public class RS256PublicKey extends PublicKey {
       this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
       this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
     } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
-      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }
@@ -94,27 +92,21 @@ public class RS256PublicKey extends PublicKey {
   }
 
   @Override
-  boolean verifyData(String input, String output) throws InvalidAsymmetricKeyException {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  byte[] signData(String input) throws InvalidAsymmetricKeyException, InvalidEncodingException {
-    try {
-      signature.update(input.getBytes("UTF-8"));
-      return signature.sign();
-    } catch (UnsupportedEncodingException | SignatureException e) {
-      throw new InvalidEncodingException("Cannot encrypt with current key");
-    }
-  }
-
-  @Override
   byte[] encryptData(String plainText) throws InvalidEncodingException {
     try {
       return this.cipher.doFinal(plainText.getBytes());
     } catch (IllegalBlockSizeException | BadPaddingException e) {
       throw new InvalidEncodingException("Cannot encrypt text");
+    }
+  }
+
+  @Override
+  boolean verifyData(String input, byte[] output) throws InvalidEncodingException {
+    try {
+      this.signature.update(input.getBytes("UTF-8"));
+      return this.signature.verify(output);
+    } catch (SignatureException | UnsupportedEncodingException e) {
+      throw new InvalidEncodingException("Signature encoding not supported");
     }
   }
 }

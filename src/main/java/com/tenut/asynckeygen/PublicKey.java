@@ -30,7 +30,7 @@ abstract public class PublicKey extends Key {
   }
 
   PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
-      UnknownAsymmetricKeyAlgorithmException {
+      UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
 
@@ -38,5 +38,15 @@ abstract public class PublicKey extends Key {
     return Base64.getEncoder().encodeToString(encryptData(plainText));
   }
 
+  public boolean verify(String input, String output) throws InvalidEncodingException {
+    try {
+      return verifyData(input, Base64.getDecoder().decode(output));
+    } catch (IllegalArgumentException e) {
+      throw new InvalidEncodingException("Signature encoding not valid");
+    }
+  }
+
   abstract byte[] encryptData(String plainText) throws InvalidEncodingException;
+
+  abstract boolean verifyData(String input, byte[] output) throws InvalidEncodingException;
 }

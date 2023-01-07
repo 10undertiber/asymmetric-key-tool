@@ -44,4 +44,12 @@ public class AsymmetricKeyPair {
   public String decrypt(String encryptedMessage) throws InvalidEncodingException {
     return this.privateKey.decrypt(encryptedMessage);
   }
+
+  public String sign(String input) throws InvalidEncodingException {
+    return this.privateKey.sign(input);
+  }
+
+  public boolean verify(String input, String output) throws InvalidEncodingException {
+    return this.publicKey.verify(input, output);
+  }
 }

@@ -29,7 +29,7 @@ public class AsymmetricKeyGenerator {
   }
 
   public static AsymmetricKeyPair loadKeyPair(AsymmetricKeyAlgorithm algorithm, String publicKey, String privateKey)
-      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
+      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException {
     AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
 
     return builder.loadKeyPair(publicKey, privateKey);

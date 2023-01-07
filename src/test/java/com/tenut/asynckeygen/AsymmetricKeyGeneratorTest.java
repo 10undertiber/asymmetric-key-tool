@@ -20,7 +20,9 @@
 package com.tenut.asynckeygen;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -57,6 +59,20 @@ public class AsymmetricKeyGeneratorTest {
           generatedPublicKey, generatedPrivateKey))
           .doesNotThrowAnyException();
 
+      assertThatThrownBy(() -> AsymmetricKeyGenerator.loadKeyPair(
+          asymmetricKeyAlgorithm,
+          generatedPublicKey,
+          new StringBuilder(
+              generatedPrivateKey).reverse().toString()))
+          .isInstanceOf(InvalidEncodingException.class);
+
+      assertThatThrownBy(() -> AsymmetricKeyGenerator.loadKeyPair(
+          asymmetricKeyAlgorithm,
+          new StringBuilder(
+              generatedPublicKey).reverse().toString(),
+          generatedPrivateKey))
+          .isInstanceOf(InvalidAsymmetricKeyException.class);
+
       AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(
           asymmetricKeyAlgorithm,
           generatedPublicKey, generatedPrivateKey);
@@ -77,7 +93,17 @@ public class AsymmetricKeyGeneratorTest {
       String decryptedMessage = loadedKeyPair.decrypt(encryptedMessage);
       assertNotNull(decryptedMessage);
 
-      assertEquals(plainMessage, decryptedMessage);
+      assertThatThrownBy(() -> loadedKeyPair.decrypt(new StringBuilder(
+          encryptedMessage).reverse().toString()))
+          .isInstanceOf(InvalidEncodingException.class);
+
+      String signature = generatedKeyPair.sign(plainMessage);
+      assertNotNull(signature);
+
+      assertTrue(generatedKeyPair.verify(plainMessage, signature));
+      assertThatThrownBy(() -> generatedKeyPair.verify(plainMessage, new StringBuilder(signature).reverse().toString()))
+          .isInstanceOf(InvalidEncodingException.class);
+      assertFalse(generatedKeyPair.verify("Not a good message", signature));
     }
 
   }

@@ -31,13 +31,23 @@ abstract public class PrivateKey extends Key {
   }
 
   PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
-      UnknownAsymmetricKeyAlgorithmException {
+      UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
 
   public String decrypt(String encryptedText) throws InvalidEncodingException {
-    return decryptData(Base64.getDecoder().decode(encryptedText));
+    try {
+      return decryptData(Base64.getDecoder().decode(encryptedText));
+    } catch (IllegalArgumentException e) {
+      throw new InvalidEncodingException("Input encoding not valid");
+    }
+  }
+
+  public String sign(String input) throws InvalidEncodingException {
+    return Base64.getEncoder().encodeToString(signData(input));
   }
 
   abstract String decryptData(byte[] encryptedText) throws InvalidEncodingException;
+
+  abstract byte[] signData(String input) throws InvalidEncodingException;
 }

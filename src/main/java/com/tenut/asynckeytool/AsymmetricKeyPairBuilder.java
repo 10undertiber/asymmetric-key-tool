@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 public interface AsymmetricKeyPairBuilder {
   AsymmetricKeyPair newKeyPair() throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException;

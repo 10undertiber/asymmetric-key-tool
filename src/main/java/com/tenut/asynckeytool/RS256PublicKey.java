@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -26,30 +26,30 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-public class RS256PrivateKey extends PrivateKey {
+public class RS256PublicKey extends PublicKey {
 
   private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
   private static final String CIPHER_ALGORITHM = "RSA";
 
-  private RSAPrivateKey key;
+  private RSAPublicKey key;
   private Signature signature;
   private Cipher cipher;
 
-  RS256PrivateKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+  RS256PublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
     super(factory, keyPair);
   }
 
-  RS256PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+  RS256PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
       UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
@@ -57,32 +57,32 @@ public class RS256PrivateKey extends PrivateKey {
   @Override
   void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException {
     try {
-      PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
-      this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
+      X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
+      this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
 
       this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-      this.signature.initSign(this.key);
+      this.signature.initVerify(this.key);
 
       this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-      this.cipher.init(Cipher.DECRYPT_MODE, this.key);
-    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
-      throw new InvalidAsymmetricKeyException("Private key format not valid");
+      this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
+    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+      throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }
 
   @Override
   void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException {
     try {
-      PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(encoded);
-      this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
+      X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(encoded);
+      this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
 
       this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-      this.signature.initSign(this.key);
+      this.signature.initVerify(this.key);
 
       this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-      this.cipher.init(Cipher.DECRYPT_MODE, this.key);
-    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
-      throw new InvalidAsymmetricKeyException("Private key format not valid");
+      this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
+    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+      throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }
 
@@ -92,21 +92,21 @@ public class RS256PrivateKey extends PrivateKey {
   }
 
   @Override
-  byte[] signData(String input) throws InvalidEncodingException {
+  byte[] encryptData(String plainText) throws InvalidEncodingException {
     try {
-      this.signature.update(input.getBytes("UTF-8"));
-      return this.signature.sign();
-    } catch (SignatureException | UnsupportedEncodingException e) {
-      throw new InvalidEncodingException("Signature encoding not supported");
+      return this.cipher.doFinal(plainText.getBytes());
+    } catch (IllegalBlockSizeException | BadPaddingException e) {
+      throw new InvalidEncodingException("Cannot encrypt text");
     }
   }
 
   @Override
-  public String decryptData(byte[] encryptedText) throws InvalidEncodingException {
+  boolean verifyData(String input, byte[] output) throws InvalidEncodingException {
     try {
-      return new String(this.cipher.doFinal(encryptedText), "UTF-8");
-    } catch (IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
-      throw new InvalidEncodingException("Cannot decrypt text");
+      this.signature.update(input.getBytes("UTF-8"));
+      return this.signature.verify(output);
+    } catch (SignatureException | UnsupportedEncodingException e) {
+      throw new InvalidEncodingException("Signature encoding not supported");
     }
   }
 }

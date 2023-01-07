@@ -17,10 +17,4 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
-
-final public class InvalidEncodingException extends Exception {
-  public InvalidEncodingException(String errorMessage) {
-    super(errorMessage);
-  }
-}
+package com.tenut.asynckeytool;

@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.tenut</groupId>
-  <artifactId>asynckeygen</artifactId>
+  <artifactId>asynckeytool</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>Asymmetric Key Generator</name>
-  <description>Asymmetric Key Generator</description>
+  <name>Asymmetric Key Tool</name>
+  <description>Asymmetric Key Tool</description>
   <url>https://10undertiber.com</url>
 
   <licenses>
@@ -22,7 +22,7 @@
 
   <developers>
     <developer>
-      <id>asymmetric-key-generator</id>
+      <id>asymmetric-key-tool</id>
       <name>10 Under Tiber Studio</name>
       <organization>10 Under Tiber Studio</organization>
       <email>developers@10undertiber.com</email>
@@ -30,15 +30,15 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/10undertiber/asymmetric-key-generator.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/10undertiber/asymmetric-key-generator.git</developerConnection>
-    <url>https://github.com/10undertiber/asymmetric-key-generator</url>
+    <connection>scm:git:https://github.com/10undertiber/asymmetric-key-tool.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/10undertiber/asymmetric-key-tool.git</developerConnection>
+    <url>https://github.com/10undertiber/asymmetric-key-tool</url>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>github</system>
-    <url>https://github.com/10undertiber/asymmetric-key-generator/issues</url>
+    <url>https://github.com/10undertiber/asymmetric-key-tool/issues</url>
   </issueManagement>
 
   <properties>
@@ -80,7 +80,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/10undertiber/asymmetric-key-generator</url>
+      <url>https://maven.pkg.github.com/10undertiber/asymmetric-key-tool</url>
     </repository>
   </distributionManagement>
 

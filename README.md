@@ -1,6 +1,6 @@
-# Asymmetric Key Generator
+# Asymmetric Key Tool
 
-[![CircleCI](https://circleci.com/gh/10undertiber/asymmetric-key-generator.svg?style=svg)](https://circleci.com/gh/10undertiber/asymmetric-key-generator)
+[![CircleCI](https://circleci.com/gh/10undertiber/asymmetric-key-tool.svg?style=svg)](https://circleci.com/gh/10undertiber/asymmetric-key-tool)
 
 An easy way to create, load and use asymmetric private/public keys in Java.
 
@@ -9,15 +9,15 @@ An easy way to create, load and use asymmetric private/public keys in Java.
 ```xml
 <dependency>
   <groupId>com.tenut</groupId>
-  <artifactId>asynckeygen</artifactId>
-  <version>0.0.4</version>
+  <artifactId>asynckeytool</artifactId>
+  <version>0.0.5</version>
 </dependency>
 ```
 
 ## Use the thing
 
 ```java
-import com.tenut.asynckeygen.AsymmetricKeyGenerator;
+import com.tenut.asynckeytool.AsymmetricKeyGenerator;
 
 class Example {
   void doIt() {

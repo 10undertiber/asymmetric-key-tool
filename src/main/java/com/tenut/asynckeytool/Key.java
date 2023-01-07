@@ -17,37 +17,38 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.util.Base64;
 
-abstract public class PrivateKey extends Key {
-
-  PrivateKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+abstract class Key {
+  Key(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
-    super(factory, keyPair);
+    newKey(factory, keyPair);
   }
 
-  PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+  Key(KeyFactory factory, String encodedKey) throws InvalidEncodingException, InvalidAsymmetricKeyException,
       UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
-    super(factory, encodedKey);
+    decode(factory, encodedKey);
   }
 
-  public String decrypt(String encryptedText) throws InvalidEncodingException {
+  void decode(KeyFactory factory, String encoded) throws InvalidEncodingException, InvalidAsymmetricKeyException {
     try {
-      return decryptData(Base64.getDecoder().decode(encryptedText));
+      decodeKey(factory, Base64.getDecoder().decode(encoded));
     } catch (IllegalArgumentException e) {
-      throw new InvalidEncodingException("Input encoding not valid");
+      throw new InvalidEncodingException("Key encoding not valid");
     }
   }
 
-  public String sign(String input) throws InvalidEncodingException {
-    return Base64.getEncoder().encodeToString(signData(input));
+  String asBase64String() throws InvalidAsymmetricKeyException {
+    return Base64.getEncoder().encodeToString(encodeKey());
   }
 
-  abstract String decryptData(byte[] encryptedText) throws InvalidEncodingException;
+  abstract void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException;
 
-  abstract byte[] signData(String input) throws InvalidEncodingException;
+  abstract void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException;
+
+  abstract byte[] encodeKey();
 }

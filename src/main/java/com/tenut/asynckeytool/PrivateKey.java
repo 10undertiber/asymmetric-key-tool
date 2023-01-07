@@ -17,36 +17,37 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeygen;
+package com.tenut.asynckeytool;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.util.Base64;
 
-abstract public class PublicKey extends Key {
-  PublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+abstract public class PrivateKey extends Key {
+
+  PrivateKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
     super(factory, keyPair);
   }
 
-  PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+  PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
       UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
 
-  public String encrypt(String plainText) throws InvalidEncodingException {
-    return Base64.getEncoder().encodeToString(encryptData(plainText));
-  }
-
-  public boolean verify(String input, String output) throws InvalidEncodingException {
+  public String decrypt(String encryptedText) throws InvalidEncodingException {
     try {
-      return verifyData(input, Base64.getDecoder().decode(output));
+      return decryptData(Base64.getDecoder().decode(encryptedText));
     } catch (IllegalArgumentException e) {
-      throw new InvalidEncodingException("Signature encoding not valid");
+      throw new InvalidEncodingException("Input encoding not valid");
     }
   }
 
-  abstract byte[] encryptData(String plainText) throws InvalidEncodingException;
+  public String sign(String input) throws InvalidEncodingException {
+    return Base64.getEncoder().encodeToString(signData(input));
+  }
 
-  abstract boolean verifyData(String input, byte[] output) throws InvalidEncodingException;
+  abstract String decryptData(byte[] encryptedText) throws InvalidEncodingException;
+
+  abstract byte[] signData(String input) throws InvalidEncodingException;
 }

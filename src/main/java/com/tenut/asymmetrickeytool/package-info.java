@@ -17,10 +17,4 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeytool;
-
-final public class UnknownAsymmetricKeyAlgorithmException extends Exception {
-  public UnknownAsymmetricKeyAlgorithmException(String errorMessage) {
-    super(errorMessage);
-  }
-}
+package com.tenut.asymmetrickeytool;

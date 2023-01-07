@@ -17,17 +17,10 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeytool;
+package com.tenut.asymmetrickeytool;
 
-public interface AsymmetricKeyPairBuilder {
-  AsymmetricKeyPair newKeyPair() throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException;
-
-  AsymmetricKeyPair loadKeyPair(String publicKey, String privateKey)
-      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException;
-
-  PrivateKey loadPrivateKey(String privateKey)
-      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException;
-
-  PublicKey loadPublicKey(String publicKey)
-      throws InvalidAsymmetricKeyException, UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException;
+final public class InvalidAsymmetricKeyException extends Exception {
+  public InvalidAsymmetricKeyException(String errorMessage) {
+    super(errorMessage);
+  }
 }

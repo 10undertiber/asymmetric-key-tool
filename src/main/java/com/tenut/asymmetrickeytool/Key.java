@@ -17,36 +17,38 @@
  * limitations under the License.
  */
 
-package com.tenut.asynckeytool;
+package com.tenut.asymmetrickeytool;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.util.Base64;
 
-abstract public class PublicKey extends Key {
-  PublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+abstract class Key {
+  Key(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
-    super(factory, keyPair);
+    newKey(factory, keyPair);
   }
 
-  PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+  Key(KeyFactory factory, String encodedKey) throws InvalidEncodingException, InvalidAsymmetricKeyException,
       UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
-    super(factory, encodedKey);
+    decode(factory, encodedKey);
   }
 
-  public String encrypt(String plainText) throws InvalidEncodingException {
-    return Base64.getEncoder().encodeToString(encryptData(plainText));
-  }
-
-  public boolean verify(String input, String output) throws InvalidEncodingException {
+  void decode(KeyFactory factory, String encoded) throws InvalidEncodingException, InvalidAsymmetricKeyException {
     try {
-      return verifyData(input, Base64.getDecoder().decode(output));
+      decodeKey(factory, Base64.getDecoder().decode(encoded));
     } catch (IllegalArgumentException e) {
-      throw new InvalidEncodingException("Signature encoding not valid");
+      throw new InvalidEncodingException("Key encoding not valid");
     }
   }
 
-  abstract byte[] encryptData(String plainText) throws InvalidEncodingException;
+  String asBase64String() throws InvalidAsymmetricKeyException {
+    return Base64.getEncoder().encodeToString(encodeKey());
+  }
 
-  abstract boolean verifyData(String input, byte[] output) throws InvalidEncodingException;
+  abstract void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException;
+
+  abstract void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException;
+
+  abstract byte[] encodeKey();
 }

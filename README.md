@@ -9,15 +9,15 @@ An easy way to create, load and use asymmetric private/public keys in Java.
 ```xml
 <dependency>
   <groupId>com.tenut</groupId>
-  <artifactId>asynckeytool</artifactId>
-  <version>0.0.5</version>
+  <artifactId>asymmetrickeytool</artifactId>
+  <version>0.0.6</version>
 </dependency>
 ```
 
 ## Use the thing
 
 ```java
-import com.tenut.asynckeytool.AsymmetricKeyGenerator;
+import com.tenut.asymmetrickeytool.AsymmetricKeyGenerator;
 
 class Example {
   void doIt() {

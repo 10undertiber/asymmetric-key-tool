@@ -10,7 +10,7 @@ An easy way to create, load and use asymmetric private/public keys in Java.
 <dependency>
   <groupId>com.tenut</groupId>
   <artifactId>asymmetrickeytool</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -25,7 +25,7 @@ class Example {
     String plainMessage = "This is a secret message...";
 
     // Create new keys
-    AsymmetricKeyPair key = AsymmetricKeyGenerator.newKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_R256);
+    AsymmetricKeyPair key = AsymmetricKeyGenerator.newKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256);
 
     // Encode a message
     String encryptedMessage = generatedKeyPair.encrypt(plainMessage);

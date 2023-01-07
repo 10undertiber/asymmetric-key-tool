@@ -10,7 +10,7 @@ An easy way to create, load and use asymmetric private/public keys in Java.
 <dependency>
   <groupId>com.tenut</groupId>
   <artifactId>asymmetrickeytool</artifactId>
-  <version>0.0.6</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 

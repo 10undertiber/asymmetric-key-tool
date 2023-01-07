@@ -31,7 +31,8 @@ public class AsymmetricKeyGeneratorTest {
   private static final String Base64Regex = "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$";
 
   @Test
-  public void shouldPass() throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
+  public void shouldPass()
+      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException {
     AsymmetricKeyAlgorithm[] algorithms = { AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256 };
 
     for (AsymmetricKeyAlgorithm asymmetricKeyAlgorithm : algorithms) {
@@ -45,8 +46,8 @@ public class AsymmetricKeyGeneratorTest {
 
       assertNotNull(generatedKeyPair);
 
-      String generatedPrivateKey = generatedKeyPair.getPrivateKey().asBase64String();
-      String generatedPublicKey = generatedKeyPair.getPublicKey().asBase64String();
+      String generatedPrivateKey = generatedKeyPair.getPrivateKey();
+      String generatedPublicKey = generatedKeyPair.getPublicKey();
 
       assertTrue(generatedPrivateKey.matches(Base64Regex));
       assertTrue(generatedPublicKey.matches(Base64Regex));
@@ -62,19 +63,21 @@ public class AsymmetricKeyGeneratorTest {
 
       assertNotNull(loadedKeyPair);
 
-      String loadedPrivateKey = loadedKeyPair.getPrivateKey().asBase64String();
-      String loadedPublicKey = loadedKeyPair.getPublicKey().asBase64String();
+      String loadedPrivateKey = loadedKeyPair.getPrivateKey();
+      String loadedPublicKey = loadedKeyPair.getPublicKey();
 
       assertEquals(loadedPublicKey, generatedPublicKey);
       assertEquals(loadedPrivateKey, generatedPrivateKey);
 
       String plainMessage = "Hello, World!";
-      String encryptedMessage = generatedKeyPair.getPrivateKey().encrypt(plainMessage);
-      String decryptedMessage = loadedKeyPair.getPrivateKey().decrypt(encryptedMessage);
+
+      String encryptedMessage = generatedKeyPair.encrypt(plainMessage);
+      assertNotNull(encryptedMessage);
+
+      String decryptedMessage = loadedKeyPair.decrypt(encryptedMessage);
+      assertNotNull(decryptedMessage);
 
       assertEquals(plainMessage, decryptedMessage);
-
-      assertTrue(loadedKeyPair.getPublicKey().verify(plainMessage, encryptedMessage));
     }
 
   }

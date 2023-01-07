@@ -21,13 +21,22 @@ package com.tenut.asynckeygen;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.util.Base64;
 
 abstract public class PublicKey extends Key {
-  PublicKey(KeyFactory factory, KeyPair keyPair) {
+  PublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+      InvalidAsymmetricKeyException {
     super(factory, keyPair);
   }
 
-  PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException {
+  PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+      UnknownAsymmetricKeyAlgorithmException {
     super(factory, encodedKey);
   }
+
+  public String encrypt(String plainText) throws InvalidEncodingException {
+    return Base64.getEncoder().encodeToString(encryptData(plainText));
+  }
+
+  abstract byte[] encryptData(String plainText) throws InvalidEncodingException;
 }

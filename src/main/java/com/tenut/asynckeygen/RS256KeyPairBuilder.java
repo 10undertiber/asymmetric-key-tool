@@ -31,7 +31,7 @@ public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
   private static final int KEY_SIZE = 2048;
 
   @Override
-  public AsymmetricKeyPair newKeyPair() throws UnknownAsymmetricKeyAlgorithmException {
+  public AsymmetricKeyPair newKeyPair() throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
     try {
       KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
       KeyPairGenerator generator = KeyPairGenerator.getInstance(KEY_ALGORITHM);

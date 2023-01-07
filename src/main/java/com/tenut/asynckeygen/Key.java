@@ -24,11 +24,13 @@ import java.security.KeyPair;
 import java.util.Base64;
 
 abstract class Key {
-  Key(KeyFactory factory, KeyPair keyPair) {
+  Key(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+      InvalidAsymmetricKeyException {
     newKey(factory, keyPair);
   }
 
-  Key(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException {
+  Key(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+      UnknownAsymmetricKeyAlgorithmException {
     decode(factory, encodedKey);
   }
 
@@ -40,15 +42,25 @@ abstract class Key {
     return Base64.getEncoder().encodeToString(encodeKey());
   }
 
-  abstract void newKey(KeyFactory factory, KeyPair keyPair);
+  abstract void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException;
 
   abstract void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException;
 
   abstract byte[] encodeKey();
 
-  public abstract String encrypt(String input);
+  public String sign(String input) throws UnknownAsymmetricKeyAlgorithmException,
+      InvalidAsymmetricKeyException, InvalidEncodingException {
+    return Base64.getEncoder().encodeToString(signData(input));
+  }
 
-  public abstract String decrypt(String input);
+  public boolean verify(String input, String output) throws UnknownAsymmetricKeyAlgorithmException,
+      InvalidAsymmetricKeyException, InvalidEncodingException {
+    return verifyData(input, output);
+  }
 
-  public abstract boolean verify(String input, String output);
+  abstract byte[] signData(String input) throws InvalidAsymmetricKeyException,
+      InvalidEncodingException;
+
+  abstract boolean verifyData(String input, String output) throws InvalidAsymmetricKeyException,
+      InvalidEncodingException;
 }

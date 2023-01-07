@@ -19,27 +19,56 @@
 
 package com.tenut.asynckeygen;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 public class RS256PublicKey extends PublicKey {
 
-  private RSAPublicKey key;
+  private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
+  private static final String CIPHER_ALGORITHM = "RSA";
 
-  RS256PublicKey(KeyFactory factory, KeyPair keyPair) {
+  private RSAPublicKey key;
+  private Signature signature;
+  private Cipher cipher;
+
+  RS256PublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+      InvalidAsymmetricKeyException {
     super(factory, keyPair);
   }
 
-  RS256PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException {
+  RS256PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+      UnknownAsymmetricKeyAlgorithmException {
     super(factory, encodedKey);
   }
 
   @Override
-  void newKey(KeyFactory factory, KeyPair keyPair) {
-    this.key = (RSAPublicKey) keyPair.getPublic();
+  void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException {
+    try {
+      X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
+      this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
+
+      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+      this.signature.initVerify(this.key);
+
+      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
+    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+      e.printStackTrace();
+      throw new InvalidAsymmetricKeyException("Public key format not valid");
+    }
   }
 
   @Override
@@ -47,7 +76,14 @@ public class RS256PublicKey extends PublicKey {
     try {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(encoded);
       this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
-    } catch (InvalidKeySpecException | NullPointerException e) {
+
+      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+      this.signature.initVerify(this.key);
+
+      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
+    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }
@@ -58,20 +94,27 @@ public class RS256PublicKey extends PublicKey {
   }
 
   @Override
-  public String encrypt(String input) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public String decrypt(String input) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public boolean verify(String input, String output) {
+  boolean verifyData(String input, String output) throws InvalidAsymmetricKeyException {
     // TODO Auto-generated method stub
     return false;
+  }
+
+  @Override
+  byte[] signData(String input) throws InvalidAsymmetricKeyException, InvalidEncodingException {
+    try {
+      signature.update(input.getBytes("UTF-8"));
+      return signature.sign();
+    } catch (UnsupportedEncodingException | SignatureException e) {
+      throw new InvalidEncodingException("Cannot encrypt with current key");
+    }
+  }
+
+  @Override
+  byte[] encryptData(String plainText) throws InvalidEncodingException {
+    try {
+      return this.cipher.doFinal(plainText.getBytes());
+    } catch (IllegalBlockSizeException | BadPaddingException e) {
+      throw new InvalidEncodingException("Cannot encrypt text");
+    }
   }
 }

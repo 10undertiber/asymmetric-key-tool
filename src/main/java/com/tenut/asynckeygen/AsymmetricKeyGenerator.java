@@ -22,7 +22,7 @@ package com.tenut.asynckeygen;
 public class AsymmetricKeyGenerator {
 
   public static AsymmetricKeyPair newKeyPair(AsymmetricKeyAlgorithm algorithm)
-      throws UnknownAsymmetricKeyAlgorithmException {
+      throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException {
     AsymmetricKeyPairBuilder builder = AsymmetricKeyGenerator.getBuilder(algorithm);
 
     return builder.newKeyPair();

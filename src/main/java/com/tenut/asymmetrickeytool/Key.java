@@ -42,7 +42,7 @@ abstract class Key {
     }
   }
 
-  String asBase64String() throws InvalidAsymmetricKeyException {
+  public String toBase64() throws InvalidAsymmetricKeyException {
     return Base64.getEncoder().encodeToString(encodeKey());
   }
 

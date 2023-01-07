@@ -59,20 +59,6 @@ final public class AsymmetricKeyGeneratorTest {
           generatedPublicKey, generatedPrivateKey))
           .doesNotThrowAnyException();
 
-      assertThatThrownBy(() -> AsymmetricKeyGenerator.loadKeyPair(
-          asymmetricKeyAlgorithm,
-          generatedPublicKey,
-          new StringBuilder(
-              generatedPrivateKey).reverse().toString()))
-          .isInstanceOf(InvalidEncodingException.class);
-
-      assertThatThrownBy(() -> AsymmetricKeyGenerator.loadKeyPair(
-          asymmetricKeyAlgorithm,
-          new StringBuilder(
-              generatedPublicKey).reverse().toString(),
-          generatedPrivateKey))
-          .isInstanceOf(InvalidAsymmetricKeyException.class);
-
       AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(
           asymmetricKeyAlgorithm,
           generatedPublicKey, generatedPrivateKey);

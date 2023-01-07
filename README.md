@@ -10,7 +10,7 @@ An easy way to create, load and use asymmetric private/public keys in Java.
 <dependency>
   <groupId>com.tenut</groupId>
   <artifactId>asymmetrickeytool</artifactId>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
 </dependency>
 ```
 
@@ -44,7 +44,7 @@ class Example {
     String publicKey = key.getPublicKey().toBase64();
 
     // Load an existing key pair
-    AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_R256, publicKey, privateKey);
+    AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256, publicKey, privateKey);
   } 
 }
 ```

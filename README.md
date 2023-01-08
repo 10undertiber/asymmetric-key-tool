@@ -8,7 +8,7 @@ A library to easily use asymmetric cryptography in Java
 <dependency>
   <groupId>com.tenut</groupId>
   <artifactId>asymmetrickeytool</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
 </dependency>
 ```
 
@@ -63,6 +63,14 @@ Encryption with asymmetric cryptography works in a slightly different way from s
 
  * [x] [RSA](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa/)
  * [ ] [ECDSA](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ec/)
+
+---
+
+## 🎙 Credits
+
+This project has been inspired by:
+
+- [Cryptography 101 for Java Developers by Michel Schudel](https://www.youtube.com/watch?v=1925zmDP_BY)
 
 ---
 

@@ -8,7 +8,7 @@ A library to easily use asymmetric cryptography in Java
 <dependency>
   <groupId>com.tenut</groupId>
   <artifactId>asymmetrickeytool</artifactId>
-  <version>0.1.5</version>
+  <version>0.1.7</version>
 </dependency>
 ```
 

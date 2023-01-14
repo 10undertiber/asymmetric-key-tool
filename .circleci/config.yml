@@ -35,7 +35,11 @@ jobs:
             - v1-build-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
             # fallback to using the latest cache if no exact match is found
             - v1-build-dependencies-
-      - run: mvn clean package -DskipTests -Dmaven.test.skip=true --settings maven/settings.xml
+      - run:
+          name: Maven Package
+          command: |
+            cd java
+            mvn clean package -DskipTests -Dmaven.test.skip=true --settings maven/settings.xml
       - save_cache:
           paths:
             - ~/.m2
@@ -52,7 +56,11 @@ jobs:
             - v1-test-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "pom.xml" }}
             # fallback to using the latest cache if no exact match is found
             - v1-test-dependencies-
-      - run: mvn clean verify --settings maven/settings.xml
+      - run:
+          name: Maven Verify
+          command: |
+            cd java
+            mvn clean verify --settings maven/settings.xml
       - save_cache:
           paths:
             - ~/.m2
@@ -60,6 +68,7 @@ jobs:
       - run:
           name: Save test results
           command: |
+            cd java
             mkdir -p ~/junit/
             find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
           when: always
@@ -82,12 +91,14 @@ jobs:
       - run:
           name: Setup Maven package
           command: |
+            cd java
             cat pom.xml | sed "s/0.0.1-SNAPSHOT/${CIRCLE_TAG}/g" > pom.xml.new
             cat pom.xml.new > pom.xml
             rm pom.xml.new
       - run:
           name: Publish Maven package
           command: |
+            cd java
             export PATH="$PATH:$HOME/.local/bin"
             export GITHUB_TOKEN=${GITHUB_ACCESS_TOKEN}
             mvn clean deploy --batch-mode --settings maven/settings.xml

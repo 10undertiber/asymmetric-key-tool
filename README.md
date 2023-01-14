@@ -55,22 +55,15 @@ Asymmetric cryptography has two primary use cases: authentication and confidenti
 
 Encryption with asymmetric cryptography works in a slightly different way from symmetric encryption. Someone with the public key is able to encrypt a message, providing confidentiality, and then only the person in possession of the private key is able to decrypt it.
 
-  [Read More](https://en.wikipedia.org/wiki/Public-key_cryptography)
-
+##### More about it
+- [Cryptography 101 for Java Developers by Michel Schudel - Devoxx](https://www.youtube.com/watch?v=1925zmDP_BY)
+- [Key Exchange Problems - Computerphile](https://www.youtube.com/watch?v=vsXMMT2CqqE)
 ---
 
 ## 🚧 Roadmap
 
  * [x] [RSA](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa/)
  * [ ] [ECDSA](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ec/)
-
----
-
-## 🎙 Credits
-
-This project has been inspired by:
-
-- [Cryptography 101 for Java Developers by Michel Schudel](https://www.youtube.com/watch?v=1925zmDP_BY)
 
 ---
 

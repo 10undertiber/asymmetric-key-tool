@@ -76,6 +76,11 @@
     </dependency>
   </dependencies>
 
+  <!--
+  -
+  https://docs.github.com/en/enterprise-cloud@latest/actions/publishing-packages/publishing-java-packages-with-maven#publishing-packages-to-the-maven-central-repository-and-github-packages
+  - https://central.sonatype.org/publish/publish-guide/#initial-setup
+  -->
   <distributionManagement>
     <repository>
       <id>github</id>
@@ -177,7 +182,8 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <minimizeJar>true</minimizeJar>
+              <minimizeJar>
+                true</minimizeJar>
             </configuration>
           </execution>
         </executions>

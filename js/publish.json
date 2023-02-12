@@ -1,0 +1,10 @@
+{
+  "name": "@10undertiber/asymmetric-key-tool",
+  "version": "0.0.0",
+  "description": "Asymmetric Key Tool",
+  "main": "main.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": "git://github.com/10undertiber/asymmetric-key-tool"
+}

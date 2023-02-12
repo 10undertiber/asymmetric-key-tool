@@ -1,0 +1,6 @@
+{
+  "threshold": 10,
+  "reporters": ["html", "console"],
+  "ignore": ["**/*.test.js,**/*.styles.js,**/*.css"],
+  "absolute": true
+}

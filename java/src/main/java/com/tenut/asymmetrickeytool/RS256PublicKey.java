@@ -92,20 +92,20 @@ public class RS256PublicKey extends PublicKey {
   }
 
   @Override
-  byte[] encryptData(String plainText) throws InvalidEncodingException {
+  byte[] encryptData(byte[] plainText) throws InvalidEncodingException {
     try {
-      return this.cipher.doFinal(plainText.getBytes());
+      return this.cipher.doFinal(plainText);
     } catch (IllegalBlockSizeException | BadPaddingException e) {
       throw new InvalidEncodingException("Cannot encrypt text");
     }
   }
 
   @Override
-  boolean verifyData(String input, byte[] output) throws InvalidEncodingException {
+  boolean verifyData(byte[] input, byte[] output) throws InvalidEncodingException {
     try {
-      this.signature.update(input.getBytes("UTF-8"));
+      this.signature.update(input);
       return this.signature.verify(output);
-    } catch (SignatureException | UnsupportedEncodingException e) {
+    } catch (SignatureException e) {
       throw new InvalidEncodingException("Signature encoding not supported");
     }
   }

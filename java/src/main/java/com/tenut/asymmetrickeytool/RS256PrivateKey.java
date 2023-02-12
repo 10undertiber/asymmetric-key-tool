@@ -92,20 +92,20 @@ public class RS256PrivateKey extends PrivateKey {
   }
 
   @Override
-  byte[] signData(String input) throws InvalidEncodingException {
+  byte[] signData(byte[] input) throws InvalidEncodingException {
     try {
-      this.signature.update(input.getBytes("UTF-8"));
+      this.signature.update(input);
       return this.signature.sign();
-    } catch (SignatureException | UnsupportedEncodingException e) {
+    } catch (SignatureException e) {
       throw new InvalidEncodingException("Signature encoding not supported");
     }
   }
 
   @Override
-  public String decryptData(byte[] encryptedText) throws InvalidEncodingException {
+  public byte[] decryptData(byte[] encryptedText) throws InvalidEncodingException {
     try {
-      return new String(this.cipher.doFinal(encryptedText), "UTF-8");
-    } catch (IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
+      return this.cipher.doFinal(encryptedText);
+    } catch (IllegalBlockSizeException | BadPaddingException e) {
       throw new InvalidEncodingException("Cannot decrypt text");
     }
   }

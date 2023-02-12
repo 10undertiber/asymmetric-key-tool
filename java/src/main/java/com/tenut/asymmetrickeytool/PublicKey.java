@@ -35,18 +35,30 @@ abstract public class PublicKey extends Key {
   }
 
   public String encrypt(String plainText) throws InvalidEncodingException {
-    return Base64.getEncoder().encodeToString(encryptData(plainText));
-  }
-
-  public boolean verify(String input, String output) throws InvalidEncodingException {
     try {
-      return verifyData(input, Base64.getDecoder().decode(output));
-    } catch (IllegalArgumentException e) {
+      return Base64.getEncoder().encodeToString(encrypt(plainText.getBytes("UTF-8")));
+    } catch (java.io.UnsupportedEncodingException e) {
       throw new InvalidEncodingException("Signature encoding not valid");
     }
   }
 
-  abstract byte[] encryptData(String plainText) throws InvalidEncodingException;
+  public byte[] encrypt(byte[] plainText) throws InvalidEncodingException {
+    return encryptData(plainText);
+  }
 
-  abstract boolean verifyData(String input, byte[] output) throws InvalidEncodingException;
+  public boolean verify(String input, String output) throws InvalidEncodingException {
+    try {
+      return verify(input.getBytes("UTF-8"), Base64.getDecoder().decode(output));
+    } catch (IllegalArgumentException | java.io.UnsupportedEncodingException e) {
+      throw new InvalidEncodingException("Signature encoding not valid");
+    }
+  }
+
+  public boolean verify(byte[] input, byte[] output) throws InvalidEncodingException {
+    return verifyData(input, output);
+  }
+
+  abstract byte[] encryptData(byte[] plainText) throws InvalidEncodingException;
+
+  abstract boolean verifyData(byte[] input, byte[] output) throws InvalidEncodingException;
 }

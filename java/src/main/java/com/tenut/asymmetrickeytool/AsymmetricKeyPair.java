@@ -41,7 +41,15 @@ final public class AsymmetricKeyPair {
     return this.publicKey.encrypt(plainMessage);
   }
 
+  public byte[] encrypt(byte[] plainMessage) throws InvalidEncodingException {
+    return this.publicKey.encrypt(plainMessage);
+  }
+
   public String decrypt(String encryptedMessage) throws InvalidEncodingException {
+    return this.privateKey.decrypt(encryptedMessage);
+  }
+
+  public byte[] decrypt(byte[] encryptedMessage) throws InvalidEncodingException {
     return this.privateKey.decrypt(encryptedMessage);
   }
 
@@ -49,7 +57,15 @@ final public class AsymmetricKeyPair {
     return this.privateKey.sign(input);
   }
 
+  public byte[] sign(byte[] input) throws InvalidEncodingException {
+    return this.privateKey.sign(input);
+  }
+
   public boolean verify(String input, String output) throws InvalidEncodingException {
+    return this.publicKey.verify(input, output);
+  }
+
+  public boolean verify(byte[] input, byte[] output) throws InvalidEncodingException {
     return this.publicKey.verify(input, output);
   }
 }

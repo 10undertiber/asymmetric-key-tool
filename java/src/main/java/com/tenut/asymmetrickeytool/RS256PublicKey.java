@@ -19,7 +19,6 @@
 
 package com.tenut.asymmetrickeytool;
 
-import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;

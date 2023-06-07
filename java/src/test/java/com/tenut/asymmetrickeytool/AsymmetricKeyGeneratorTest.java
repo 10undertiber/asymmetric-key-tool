@@ -35,7 +35,7 @@ final public class AsymmetricKeyGeneratorTest {
   @Test
   public void shouldPass()
       throws UnknownAsymmetricKeyAlgorithmException, InvalidAsymmetricKeyException, InvalidEncodingException {
-    AsymmetricKeyAlgorithm[] algorithms = { AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256 };
+    AsymmetricKeyAlgorithm[] algorithms = { AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RSA };
 
     for (AsymmetricKeyAlgorithm asymmetricKeyAlgorithm : algorithms) {
 

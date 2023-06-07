@@ -25,7 +25,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-final public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
+final public class RSAKeyPairBuilder implements AsymmetricKeyPairBuilder {
   private static final String KEY_ALGORITHM = "RSA";
   private static final int KEY_SIZE = 2048;
 
@@ -38,8 +38,8 @@ final public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
 
       KeyPair keyPair = generator.generateKeyPair();
 
-      PrivateKey privKey = new RS256PrivateKey(factory, keyPair);
-      PublicKey pubKey = new RS256PublicKey(factory, keyPair);
+      PrivateKey privKey = new RSAPrivateKey(factory, keyPair);
+      PublicKey pubKey = new RSAPublicKey(factory, keyPair);
 
       return new AsymmetricKeyPair(pubKey, privKey);
     } catch (NoSuchAlgorithmException e) {
@@ -53,8 +53,8 @@ final public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
     try {
       KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
 
-      PrivateKey privKey = new RS256PrivateKey(factory, privateKey);
-      PublicKey pubKey = new RS256PublicKey(factory, publicKey);
+      PrivateKey privKey = new RSAPrivateKey(factory, privateKey);
+      PublicKey pubKey = new RSAPublicKey(factory, publicKey);
 
       return new AsymmetricKeyPair(pubKey, privKey);
     } catch (NoSuchAlgorithmException e) {
@@ -68,7 +68,7 @@ final public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
     try {
       KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
 
-      return new RS256PrivateKey(factory, privateKey);
+      return new RSAPrivateKey(factory, privateKey);
     } catch (NoSuchAlgorithmException e) {
       throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
     }
@@ -80,7 +80,7 @@ final public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
     try {
       KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
 
-      return new RS256PublicKey(factory, publicKey);
+      return new RSAPublicKey(factory, publicKey);
     } catch (NoSuchAlgorithmException e) {
       throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
     }

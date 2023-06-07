@@ -25,7 +25,6 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
@@ -34,18 +33,18 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-final public class RS256PublicKey extends PublicKey {
+final public class RSAPublicKey extends PublicKey {
 
-  private RSAPublicKey key;
+  private java.security.interfaces.RSAPublicKey key;
   private Signature signature;
   private Cipher cipher;
 
-  RS256PublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+  RSAPublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
     super(factory, keyPair);
   }
 
-  RS256PublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+  RSAPublicKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
       UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
@@ -54,7 +53,7 @@ final public class RS256PublicKey extends PublicKey {
   void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException {
     try {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
-      this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
+      this.key = (java.security.interfaces.RSAPublicKey) factory.generatePublic(pubSpec);
 
       this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initVerify(this.key);
@@ -71,7 +70,7 @@ final public class RS256PublicKey extends PublicKey {
   void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException {
     try {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(encoded);
-      this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
+      this.key = (java.security.interfaces.RSAPublicKey) factory.generatePublic(pubSpec);
 
       this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initVerify(this.key);

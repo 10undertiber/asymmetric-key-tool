@@ -25,7 +25,6 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 
@@ -34,18 +33,18 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-final public class RS256PrivateKey extends PrivateKey {
+final public class RSAPrivateKey extends PrivateKey {
 
-  private RSAPrivateKey key;
+  private java.security.interfaces.RSAPrivateKey key;
   private Signature signature;
   private Cipher cipher;
 
-  RS256PrivateKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
+  RSAPrivateKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
     super(factory, keyPair);
   }
 
-  RS256PrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
+  RSAPrivateKey(KeyFactory factory, String encodedKey) throws InvalidAsymmetricKeyException,
       UnknownAsymmetricKeyAlgorithmException, InvalidEncodingException {
     super(factory, encodedKey);
   }
@@ -54,7 +53,7 @@ final public class RS256PrivateKey extends PrivateKey {
   void newKey(KeyFactory factory, KeyPair keyPair) throws InvalidAsymmetricKeyException {
     try {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
-      this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
+      this.key = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(privSpec);
 
       this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initSign(this.key);
@@ -72,7 +71,7 @@ final public class RS256PrivateKey extends PrivateKey {
   void decodeKey(KeyFactory factory, byte[] encoded) throws InvalidAsymmetricKeyException {
     try {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(encoded);
-      this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
+      this.key = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(privSpec);
 
       this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initSign(this.key);

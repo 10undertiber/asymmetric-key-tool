@@ -52,8 +52,8 @@ final public class AsymmetricKeyGenerator {
   private static AsymmetricKeyPairBuilder getBuilder(AsymmetricKeyAlgorithm algorithm)
       throws UnknownAsymmetricKeyAlgorithmException {
     switch (algorithm) {
-      case ASYMMETRIC_KEY_ALGORITHM_RS256:
-        return new RS256KeyPairBuilder();
+      case ASYMMETRIC_KEY_ALGORITHM_RSA:
+        return new RSAKeyPairBuilder();
       default:
         throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
     }

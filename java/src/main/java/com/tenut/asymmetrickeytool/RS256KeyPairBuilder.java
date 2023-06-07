@@ -25,8 +25,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
-
+final public class RS256KeyPairBuilder implements AsymmetricKeyPairBuilder {
   private static final String KEY_ALGORITHM = "RSA";
   private static final int KEY_SIZE = 2048;
 

@@ -34,10 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-public class RS256PrivateKey extends PrivateKey {
-
-  private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
-  private static final String CIPHER_ALGORITHM = "RSA";
+final public class RS256PrivateKey extends PrivateKey {
 
   private RSAPrivateKey key;
   private Signature signature;
@@ -59,12 +56,14 @@ public class RS256PrivateKey extends PrivateKey {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
       this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
 
-      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+      this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initSign(this.key);
 
-      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.DECRYPT_MODE, this.key);
+
     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Private key format not valid");
     }
   }
@@ -75,12 +74,13 @@ public class RS256PrivateKey extends PrivateKey {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(encoded);
       this.key = (RSAPrivateKey) factory.generatePrivate(privSpec);
 
-      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+      this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initSign(this.key);
 
-      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.DECRYPT_MODE, this.key);
     } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Private key format not valid");
     }
   }

@@ -34,10 +34,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-public class RS256PublicKey extends PublicKey {
-
-  private static final String SIGNATURE_ALGORITHM = "SHA256withRSA";
-  private static final String CIPHER_ALGORITHM = "RSA";
+final public class RS256PublicKey extends PublicKey {
 
   private RSAPublicKey key;
   private Signature signature;
@@ -59,12 +56,13 @@ public class RS256PublicKey extends PublicKey {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
       this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
 
-      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+      this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initVerify(this.key);
 
-      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
     } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }
@@ -75,12 +73,13 @@ public class RS256PublicKey extends PublicKey {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(encoded);
       this.key = (RSAPublicKey) factory.generatePublic(pubSpec);
 
-      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+      this.signature = Signature.getInstance("SHA512withRSA");
       this.signature.initVerify(this.key);
 
-      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
     } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+      e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
   }

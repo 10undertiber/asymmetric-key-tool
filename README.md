@@ -58,13 +58,7 @@ Encryption with asymmetric cryptography works in a slightly different way from s
 ##### More about it
 - [Cryptography 101 for Java Developers by Michel Schudel - Devoxx](https://www.youtube.com/watch?v=1925zmDP_BY)
 - [Key Exchange Problems - Computerphile](https://www.youtube.com/watch?v=vsXMMT2CqqE)
----
-
-## 🚧 Roadmap
-
- * [x] [RSA](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa/)
- * [ ] [ECDSA](https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ec/)
-
+- [Breaking RSA - Computerphile](https://www.youtube.com/watch?v=-ShwJqAalOk)
 ---
 
 ## 👔 License

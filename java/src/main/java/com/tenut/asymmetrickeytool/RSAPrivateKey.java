@@ -23,6 +23,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
@@ -55,13 +56,14 @@ final public class RSAPrivateKey extends PrivateKey {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
       this.key = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(privSpec);
 
-      this.signature = Signature.getInstance("SHA512withRSA");
+      this.signature = Signature.getInstance("SHA512withRSA", "BC");
       this.signature.initSign(this.key);
 
       this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.DECRYPT_MODE, this.key);
 
-    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException
+        | NoSuchProviderException e) {
       e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Private key format not valid");
     }
@@ -73,12 +75,13 @@ final public class RSAPrivateKey extends PrivateKey {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(encoded);
       this.key = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(privSpec);
 
-      this.signature = Signature.getInstance("SHA512withRSA");
+      this.signature = Signature.getInstance("SHA512withRSA", "BC");
       this.signature.initSign(this.key);
 
       this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.DECRYPT_MODE, this.key);
-    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException
+        | NoSuchProviderException e) {
       e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Private key format not valid");
     }

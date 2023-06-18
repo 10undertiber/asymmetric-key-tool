@@ -23,6 +23,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
@@ -55,12 +56,13 @@ final public class RSAPublicKey extends PublicKey {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(keyPair.getPublic().getEncoded());
       this.key = (java.security.interfaces.RSAPublicKey) factory.generatePublic(pubSpec);
 
-      this.signature = Signature.getInstance("SHA512withRSA");
+      this.signature = Signature.getInstance("SHA512withRSA", "BC");
       this.signature.initVerify(this.key);
 
       this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
-    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException
+        | NoSuchProviderException e) {
       e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }
@@ -72,12 +74,13 @@ final public class RSAPublicKey extends PublicKey {
       X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(encoded);
       this.key = (java.security.interfaces.RSAPublicKey) factory.generatePublic(pubSpec);
 
-      this.signature = Signature.getInstance("SHA512withRSA");
+      this.signature = Signature.getInstance("SHA512withRSA", "BC");
       this.signature.initVerify(this.key);
 
       this.cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
       this.cipher.init(Cipher.ENCRYPT_MODE, this.key);
-    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
+    } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException
+        | NoSuchProviderException e) {
       e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Public key format not valid");
     }

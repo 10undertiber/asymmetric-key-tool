@@ -54,6 +54,8 @@
       4.11</junit.version>
     <assertj.version>
       3.24.0</assertj.version>
+    <bouncycastle.version>
+      1.70</bouncycastle.version>
     <spotbugs.version>4.7.3</spotbugs.version>
     <maven.spotbugs.plugin.version>4.7.2.1</maven.spotbugs.plugin.version>
     <findsecbugs.plugin.version>1.12.0</findsecbugs.plugin.version>
@@ -62,6 +64,12 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>${bouncycastle.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -92,7 +100,6 @@
   <build>
     <pluginManagement>
       <plugins>
-
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>${maven.checkstyle.plugin.version}</version>
@@ -116,7 +123,8 @@
         <configuration>
           <excludeFile>
             config/copyright-exclude</excludeFile>
-          <!--svn|mercurial|git - defaults to svn -->
+          <!--svn|mercurial|git
+          - defaults to svn -->
           <scm>git</scm>
           <!-- turn on/off debugging -->
           <debug>false</debug>

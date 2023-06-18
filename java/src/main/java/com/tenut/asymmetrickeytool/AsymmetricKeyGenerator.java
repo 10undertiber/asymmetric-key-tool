@@ -19,6 +19,10 @@
 
 package com.tenut.asymmetrickeytool;
 
+import java.security.Security;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 final public class AsymmetricKeyGenerator {
 
   public static AsymmetricKeyPair newKeyPair(AsymmetricKeyAlgorithm algorithm)
@@ -51,6 +55,9 @@ final public class AsymmetricKeyGenerator {
 
   private static AsymmetricKeyPairBuilder getBuilder(AsymmetricKeyAlgorithm algorithm)
       throws UnknownAsymmetricKeyAlgorithmException {
+    Security.setProperty("crypto.policy", "unlimited");
+    Security.addProvider(new BouncyCastleProvider());
+
     switch (algorithm) {
       case ASYMMETRIC_KEY_ALGORITHM_RSA:
         return new RSAKeyPairBuilder();

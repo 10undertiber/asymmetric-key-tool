@@ -18,7 +18,5 @@
  */
 
 module com.tenut.asymmetrickeytool {
-  requires org.bouncycastle.provider;
-
   exports com.tenut.asymmetrickeytool;
 }

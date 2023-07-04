@@ -113,6 +113,7 @@
           </dependencies>
         </plugin>
 
+        <!-- https://groups.google.com/g/dropwizard-user/c/Grp5atjNSTU/m/OwpfeQxuRM8J -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
@@ -125,25 +126,20 @@
               </goals>
               <configuration>
                 <shadedArtifactAttached>true</shadedArtifactAttached>
-                <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
-                <minimizeJar>true</minimizeJar>
+                <shadedClassifierName>shaded</shadedClassifierName>
                 <transformers>
                   <transformer
                     implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                   <transformer
                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <manifestEntries>
+                      <Class-Path>lib-signed/bcprov-jdk15on.jar</Class-Path>
+                      <Main-Class>${project.mainclass}</Main-Class>
+                    </manifestEntries>
                   </transformer>
                 </transformers>
-                <artifactSet>
-                  <excludes>
-                    <exclude>classworlds:classworlds</exclude>
-                    <exclude>junit:junit</exclude>
-                    <exclude>jmock:*</exclude>
-                    <exclude>*:xml-apis</exclude>
-                    <exclude>org.apache.maven:lib:tests</exclude>
-                    <exclude>log4j:log4j:jar:</exclude>
-                  </excludes>
-                </artifactSet>
+
+                <!-- signatures from foreign jars are bad news -->
                 <filters>
                   <filter>
                     <artifact>*:*</artifact>
@@ -154,6 +150,32 @@
                     </excludes>
                   </filter>
                 </filters>
+
+                <artifactSet>
+                  <excludes>
+                    <exclude>org.bouncycastle:bcprov-jdk15on</exclude>
+                  </excludes>
+                </artifactSet>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.8</version>
+          <executions>
+            <execution>
+              <id>copy</id>
+              <phase>package</phase>
+              <goals>
+                <goal>copy-dependencies</goal>
+              </goals>
+              <configuration>
+                <outputDirectory>${project.build.directory}/lib-signed</outputDirectory>
+                <includeArtifactIds>bcprov-jdk15on</includeArtifactIds>
+                <stripVersion>true</stripVersion>
               </configuration>
             </execution>
           </executions>

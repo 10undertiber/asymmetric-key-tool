@@ -61,6 +61,7 @@
     <findsecbugs.plugin.version>1.12.0</findsecbugs.plugin.version>
     <maven.enforcer.plugin.version>
       3.0.0-M3</maven.enforcer.plugin.version>
+    <maven.shade.plugin.version>2.4.3</maven.shade.plugin.version>
   </properties>
 
   <dependencies>
@@ -110,6 +111,52 @@
               <version>${puppycrawl.checkstyle.plugin}</version>
             </dependency>
           </dependencies>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${maven.shade.plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+              <configuration>
+                <shadedArtifactAttached>true</shadedArtifactAttached>
+                <shadedClassifierName>jar-with-dependencies</shadedClassifierName>
+                <minimizeJar>true</minimizeJar>
+                <transformers>
+                  <transformer
+                    implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                  <transformer
+                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  </transformer>
+                </transformers>
+                <artifactSet>
+                  <excludes>
+                    <exclude>classworlds:classworlds</exclude>
+                    <exclude>junit:junit</exclude>
+                    <exclude>jmock:*</exclude>
+                    <exclude>*:xml-apis</exclude>
+                    <exclude>org.apache.maven:lib:tests</exclude>
+                    <exclude>log4j:log4j:jar:</exclude>
+                  </excludes>
+                </artifactSet>
+                <filters>
+                  <filter>
+                    <artifact>*:*</artifact>
+                    <excludes>
+                      <exclude>META-INF/*.SF</exclude>
+                      <exclude>META-INF/*.DSA</exclude>
+                      <exclude>META-INF/*.RSA</exclude>
+                    </excludes>
+                  </filter>
+                </filters>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -177,42 +224,6 @@
           <compilerArgument>
             -Xlint:unchecked</compilerArgument>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.0</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <excludes>
-                  <exclude>classworlds:classworlds</exclude>
-                  <exclude>junit:junit</exclude>
-                  <exclude>jmock:*</exclude>
-                  <exclude>*:xml-apis</exclude>
-                  <exclude>org.apache.maven:lib:tests</exclude>
-                  <exclude>log4j:log4j:jar:</exclude>
-                </excludes>
-              </artifactSet>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>

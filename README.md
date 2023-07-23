@@ -8,7 +8,7 @@ A library to easily use asymmetric cryptography in Java
 <dependency>
   <groupId>com.tenut</groupId>
   <artifactId>asymmetrickeytool</artifactId>
-  <version>0.1.7</version>
+  <version>0.2.6</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ class Example {
     String plainMessage = "This is a secret message...";
 
     // Create new keys
-    AsymmetricKeyPair keyPair = AsymmetricKeyGenerator.newKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256);
+    AsymmetricKeyPair keyPair = AsymmetricKeyGenerator.newKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RSA);
 
     // Encode a message
     String encryptedMessage = keyPair.encrypt(plainMessage);
@@ -42,7 +42,7 @@ class Example {
     String publicKey = keyPair.getPublicKey().toBase64();
 
     // Load an existing key pair
-    AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RS256, publicKey, privateKey);
+    AsymmetricKeyPair loadedKeyPair = AsymmetricKeyGenerator.loadKeyPair(AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RSA, publicKey, privateKey);
   } 
 }
 ```

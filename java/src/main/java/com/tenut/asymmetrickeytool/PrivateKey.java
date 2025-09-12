@@ -37,8 +37,8 @@ abstract public class PrivateKey extends Key {
 
   public String decrypt(String encryptedText) throws InvalidEncodingException {
     try {
-      return new String(decrypt(Base64.getDecoder().decode(encryptedText.getBytes("UTF-8"))), "UTF-8");
-    } catch (IllegalArgumentException | java.io.UnsupportedEncodingException e) {
+      return new String(decrypt(Base64.getDecoder().decode(encryptedText)), java.nio.charset.StandardCharsets.UTF_8);
+    } catch (IllegalArgumentException e) {
       throw new InvalidEncodingException("Input encoding not valid");
     }
   }
@@ -48,11 +48,7 @@ abstract public class PrivateKey extends Key {
   }
 
   public String sign(String input) throws InvalidEncodingException {
-    try {
-      return Base64.getEncoder().encodeToString(sign(input.getBytes("UTF-8")));
-    } catch (java.io.UnsupportedEncodingException e) {
-      throw new InvalidEncodingException("Input encoding not valid");
-    }
+    return Base64.getEncoder().encodeToString(sign(input.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
   }
 
   public byte[] sign(byte[] input) throws InvalidEncodingException {

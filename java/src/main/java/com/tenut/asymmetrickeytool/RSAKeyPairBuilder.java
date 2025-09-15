@@ -23,7 +23,6 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 final public class RSAKeyPairBuilder implements AsymmetricKeyPairBuilder {
   private static final String KEY_ALGORITHM = "RSA";
@@ -34,7 +33,7 @@ final public class RSAKeyPairBuilder implements AsymmetricKeyPairBuilder {
     try {
       KeyFactory factory = KeyFactory.getInstance(KEY_ALGORITHM);
       KeyPairGenerator generator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
-      generator.initialize(KEY_SIZE, new SecureRandom());
+      generator.initialize(KEY_SIZE);
 
       KeyPair keyPair = generator.generateKeyPair();
 

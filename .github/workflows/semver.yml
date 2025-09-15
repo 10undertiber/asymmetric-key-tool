@@ -13,8 +13,15 @@ jobs:
         run: |
           git config --global user.email "ci@10undertiber.com"
           git config --global user.name "10 Under Tiber CI"
+          git config --global --add safe.directory '*'
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
       - name: Calling SemVer
         run: |
           semver
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+          GITHUB_ACTION_BRANCH: master

@@ -29,7 +29,8 @@ jobs:
     environment:
       MAVEN_OPTS: -Xmx3200m
     steps:
-      - checkout
+      - checkout:
+          ssh: false
       - restore_cache:
           keys:
             - v1-build-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "java/pom.xml" }}
@@ -50,7 +51,8 @@ jobs:
     environment:
       MAVEN_OPTS: -Xmx3200m
     steps:
-      - checkout
+      - checkout:
+          ssh: false
       - restore_cache:
           keys:
             - v1-test-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "java/pom.xml" }}
@@ -82,7 +84,8 @@ jobs:
     environment:
       MAVEN_OPTS: -Xmx3200m
     steps:
-      - checkout
+      - checkout:
+          ssh: false
       - restore_cache:
           keys:
             - v1-build-dependencies-{{ checksum ".circleci/config.yml" }}-{{ checksum "java/pom.xml" }}

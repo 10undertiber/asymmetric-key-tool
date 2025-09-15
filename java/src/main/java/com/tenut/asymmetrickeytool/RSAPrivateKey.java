@@ -19,25 +19,17 @@
 
 package com.tenut.asymmetrickeytool;
 
-import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
-import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 final public class RSAPrivateKey extends PrivateKey {
 
   private java.security.interfaces.RSAPrivateKey key;
-  private Signature signature;
-  private Cipher cipher;
 
   private static final String SIGNATURE_ALGORITHM = "SHA512withRSA";
   private static final String CIPHER_ALGORITHM = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
@@ -58,13 +50,7 @@ final public class RSAPrivateKey extends PrivateKey {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded());
       this.key = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(privSpec);
 
-      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-      this.signature.initSign(this.key);
-
-      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-      this.cipher.init(Cipher.DECRYPT_MODE, this.key);
-
-    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+    } catch (InvalidKeySpecException e) {
       e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Private key format not valid");
     }
@@ -75,13 +61,7 @@ final public class RSAPrivateKey extends PrivateKey {
     try {
       PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(encoded);
       this.key = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(privSpec);
-
-      this.signature = Signature.getInstance(SIGNATURE_ALGORITHM);
-      this.signature.initSign(this.key);
-
-      this.cipher = Cipher.getInstance(CIPHER_ALGORITHM);
-      this.cipher.init(Cipher.DECRYPT_MODE, this.key);
-    } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeySpecException e) {
+    } catch (InvalidKeySpecException e) {
       e.printStackTrace();
       throw new InvalidAsymmetricKeyException("Private key format not valid");
     }
@@ -95,18 +75,22 @@ final public class RSAPrivateKey extends PrivateKey {
   @Override
   byte[] signData(byte[] input) throws InvalidEncodingException {
     try {
-      this.signature.update(input);
-      return this.signature.sign();
-    } catch (SignatureException e) {
+      Signature sig = Signature.getInstance(SIGNATURE_ALGORITHM);
+      sig.initSign(this.key);
+      sig.update(input);
+      return sig.sign();
+    } catch (Exception e) {
       throw new InvalidEncodingException("Signature encoding not supported");
     }
   }
 
   @Override
-  public byte[] decryptData(byte[] encryptedText) throws InvalidEncodingException {
+  byte[] decryptData(byte[] encryptedText) throws InvalidEncodingException {
     try {
-      return this.cipher.doFinal(encryptedText);
-    } catch (IllegalBlockSizeException | BadPaddingException e) {
+      Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
+      cipher.init(Cipher.DECRYPT_MODE, this.key);
+      return cipher.doFinal(encryptedText);
+    } catch (Exception e) {
       throw new InvalidEncodingException("Cannot decrypt text");
     }
   }

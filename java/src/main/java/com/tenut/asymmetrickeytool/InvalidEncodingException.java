@@ -19,8 +19,23 @@
 
 package com.tenut.asymmetrickeytool;
 
-final public class InvalidEncodingException extends Exception {
-  public InvalidEncodingException(String errorMessage) {
-    super(errorMessage);
+public final class InvalidEncodingException extends Exception {
+
+  public InvalidEncodingException(String message) {
+    super(message);
+  }
+
+  public InvalidEncodingException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public InvalidEncodingException(Throwable cause) {
+    super(cause);
+  }
+
+  public InvalidEncodingException(String message, Throwable cause,
+      boolean enableSuppression,
+      boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
   }
 }

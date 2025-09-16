@@ -78,7 +78,7 @@ final public class RSAPublicKey extends PublicKey {
       cipher.init(Cipher.ENCRYPT_MODE, this.key);
       return cipher.doFinal(plainText);
     } catch (Exception e) {
-      throw new InvalidEncodingException("Cannot encrypt text");
+      throw new InvalidEncodingException("Cannot encrypt text", e);
     }
   }
 
@@ -90,7 +90,7 @@ final public class RSAPublicKey extends PublicKey {
       sig.update(input);
       return sig.verify(output);
     } catch (Exception e) {
-      throw new InvalidEncodingException("Signature encoding not supported");
+      throw new InvalidEncodingException("Signature encoding not supported", e);
     }
   }
 }

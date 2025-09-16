@@ -46,7 +46,7 @@ abstract public class PublicKey extends Key {
     try {
       return verify(input.getBytes(java.nio.charset.StandardCharsets.UTF_8), Base64.getDecoder().decode(output));
     } catch (IllegalArgumentException e) {
-      throw new InvalidEncodingException("Signature encoding not valid");
+      throw new InvalidEncodingException("Signature encoding not valid", e);
     }
   }
 

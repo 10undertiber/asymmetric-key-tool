@@ -41,7 +41,7 @@ abstract public class PrivateKey extends Key {
       byte[] decrypted = decrypt(decoded);
       return new String(decrypted, java.nio.charset.StandardCharsets.UTF_8);
     } catch (IllegalArgumentException e) {
-      throw new InvalidEncodingException("Input Base64 not valid");
+      throw new InvalidEncodingException("Input Base64 not valid", e);
     }
   }
 

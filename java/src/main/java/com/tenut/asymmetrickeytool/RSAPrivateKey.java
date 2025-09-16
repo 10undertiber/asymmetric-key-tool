@@ -80,7 +80,7 @@ final public class RSAPrivateKey extends PrivateKey {
       sig.update(input);
       return sig.sign();
     } catch (Exception e) {
-      throw new InvalidEncodingException("Signature encoding not supported");
+      throw new InvalidEncodingException("Signature encoding not supported", e);
     }
   }
 
@@ -91,7 +91,7 @@ final public class RSAPrivateKey extends PrivateKey {
       cipher.init(Cipher.DECRYPT_MODE, this.key);
       return cipher.doFinal(encryptedText);
     } catch (Exception e) {
-      throw new InvalidEncodingException("Cannot decrypt text");
+      throw new InvalidEncodingException("Cannot decrypt text", e);
     }
   }
 }

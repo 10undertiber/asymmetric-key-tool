@@ -38,7 +38,7 @@ abstract class Key {
     try {
       decodeKey(factory, Base64.getDecoder().decode(encoded));
     } catch (IllegalArgumentException e) {
-      throw new InvalidEncodingException("Key encoding not valid");
+      throw new InvalidEncodingException("Key encoding not valid", e);
     }
   }
 

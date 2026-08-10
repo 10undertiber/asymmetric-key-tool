@@ -1,0 +1,37 @@
+/*
+ *
+ * Copyright (c) 2023 10 Under Tiber Studio
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.tenut.asymmetrickeytool;
+
+public final class NativeSmokeMain {
+
+  private NativeSmokeMain() {
+  }
+
+  public static void main(String[] args) throws Exception {
+    AsymmetricKeyPair keyPair = AsymmetricKeyGenerator.newKeyPair(
+        AsymmetricKeyAlgorithm.ASYMMETRIC_KEY_ALGORITHM_RSA_V2);
+    String encrypted = keyPair.encryptV2("native smoke");
+    if (!"native smoke".equals(keyPair.decryptV2(encrypted))) {
+      throw new IllegalStateException("RSA-OAEP v2 smoke test failed");
+    }
+    String signature = keyPair.signV2("native smoke");
+    if (!keyPair.verifyV2("native smoke", signature)) {
+      throw new IllegalStateException("RSA-PSS v2 smoke test failed");
+    }
+  }
+}

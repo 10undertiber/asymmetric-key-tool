@@ -49,6 +49,19 @@ abstract public class PrivateKey extends Key {
     return decryptData(encryptedText);
   }
 
+  public String decryptV2(String encryptedText) throws InvalidEncodingException {
+    try {
+      return new String(decryptV2(Base64.getDecoder().decode(encryptedText)),
+          java.nio.charset.StandardCharsets.UTF_8);
+    } catch (IllegalArgumentException e) {
+      throw new InvalidEncodingException("Input Base64 not valid", e);
+    }
+  }
+
+  public byte[] decryptV2(byte[] encryptedText) throws InvalidEncodingException {
+    return decryptV2Data(encryptedText);
+  }
+
   public String sign(String input) throws InvalidEncodingException {
     return Base64.getEncoder().encodeToString(sign(input.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
   }
@@ -57,7 +70,24 @@ abstract public class PrivateKey extends Key {
     return signData(input);
   }
 
+  public String signV2(String input) throws InvalidEncodingException {
+    return Base64.getEncoder().encodeToString(signV2(input.getBytes(
+        java.nio.charset.StandardCharsets.UTF_8)));
+  }
+
+  public byte[] signV2(byte[] input) throws InvalidEncodingException {
+    return signV2Data(input);
+  }
+
   abstract byte[] decryptData(byte[] encryptedText) throws InvalidEncodingException;
 
   abstract byte[] signData(byte[] input) throws InvalidEncodingException;
+
+  byte[] decryptV2Data(byte[] encryptedText) throws InvalidEncodingException {
+    throw new InvalidEncodingException("RSA v2 decryption is not supported by this key");
+  }
+
+  byte[] signV2Data(byte[] input) throws InvalidEncodingException {
+    throw new InvalidEncodingException("RSA v2 signatures are not supported by this key");
+  }
 }

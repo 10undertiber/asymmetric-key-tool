@@ -21,11 +21,16 @@ package com.tenut.asymmetrickeytool;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.GeneralSecurityException;
 import java.security.Signature;
+import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PSSParameterSpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.OAEPParameterSpec;
+import javax.crypto.spec.PSource;
 
 final public class RSAPublicKey extends PublicKey {
 
@@ -33,6 +38,8 @@ final public class RSAPublicKey extends PublicKey {
 
   private static final String SIGNATURE_ALGORITHM = "SHA512withRSA";
   private static final String CIPHER_ALGORITHM = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
+  private static final String V2_CIPHER_ALGORITHM = "RSA/ECB/OAEPPadding";
+  private static final String V2_SIGNATURE_ALGORITHM = "RSASSA-PSS";
 
   RSAPublicKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
@@ -92,5 +99,41 @@ final public class RSAPublicKey extends PublicKey {
     } catch (Exception e) {
       throw new InvalidEncodingException("Signature encoding not supported", e);
     }
+  }
+
+  @Override
+  byte[] encryptV2Data(byte[] plainText) throws InvalidEncodingException {
+    try {
+      Cipher cipher = Cipher.getInstance(V2_CIPHER_ALGORITHM);
+      cipher.init(Cipher.ENCRYPT_MODE, this.key, oaepSpec());
+      return RsaV2Format.envelope(RsaV2Format.TYPE_CIPHERTEXT,
+          RsaV2Format.PROFILE_OAEP_SHA256, cipher.doFinal(plainText));
+    } catch (GeneralSecurityException e) {
+      throw new InvalidEncodingException("Cannot encrypt RSA v2 text", e);
+    }
+  }
+
+  @Override
+  boolean verifyV2Data(byte[] input, byte[] output) throws InvalidEncodingException {
+    RsaV2Format.Parsed envelope = RsaV2Format.parse(output,
+        RsaV2Format.TYPE_SIGNATURE, RsaV2Format.PROFILE_PSS_SHA256);
+    try {
+      Signature signature = Signature.getInstance(V2_SIGNATURE_ALGORITHM);
+      signature.setParameter(pssSpec());
+      signature.initVerify(this.key);
+      signature.update(RsaV2Format.signedMessage(envelope.header, input));
+      return signature.verify(envelope.payload);
+    } catch (GeneralSecurityException e) {
+      throw new InvalidEncodingException("RSA v2 signature verification not supported", e);
+    }
+  }
+
+  private OAEPParameterSpec oaepSpec() {
+    return new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256,
+        PSource.PSpecified.DEFAULT);
+  }
+
+  private PSSParameterSpec pssSpec() {
+    return new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1);
   }
 }

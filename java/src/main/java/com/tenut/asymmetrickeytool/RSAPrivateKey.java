@@ -21,11 +21,16 @@ package com.tenut.asymmetrickeytool;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.GeneralSecurityException;
 import java.security.Signature;
+import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.PSSParameterSpec;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.OAEPParameterSpec;
+import javax.crypto.spec.PSource;
 
 final public class RSAPrivateKey extends PrivateKey {
 
@@ -33,6 +38,8 @@ final public class RSAPrivateKey extends PrivateKey {
 
   private static final String SIGNATURE_ALGORITHM = "SHA512withRSA";
   private static final String CIPHER_ALGORITHM = "RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING";
+  private static final String V2_CIPHER_ALGORITHM = "RSA/ECB/OAEPPadding";
+  private static final String V2_SIGNATURE_ALGORITHM = "RSASSA-PSS";
 
   RSAPrivateKey(KeyFactory factory, KeyPair keyPair) throws UnknownAsymmetricKeyAlgorithmException,
       InvalidAsymmetricKeyException {
@@ -93,5 +100,43 @@ final public class RSAPrivateKey extends PrivateKey {
     } catch (Exception e) {
       throw new InvalidEncodingException("Cannot decrypt text", e);
     }
+  }
+
+  @Override
+  byte[] decryptV2Data(byte[] encryptedText) throws InvalidEncodingException {
+    RsaV2Format.Parsed envelope = RsaV2Format.parse(encryptedText,
+        RsaV2Format.TYPE_CIPHERTEXT, RsaV2Format.PROFILE_OAEP_SHA256);
+    try {
+      Cipher cipher = Cipher.getInstance(V2_CIPHER_ALGORITHM);
+      cipher.init(Cipher.DECRYPT_MODE, this.key, oaepSpec());
+      return cipher.doFinal(envelope.payload);
+    } catch (GeneralSecurityException e) {
+      throw new InvalidEncodingException("Cannot decrypt RSA v2 text", e);
+    }
+  }
+
+  @Override
+  byte[] signV2Data(byte[] input) throws InvalidEncodingException {
+    try {
+      byte[] header = RsaV2Format.header(RsaV2Format.TYPE_SIGNATURE,
+          RsaV2Format.PROFILE_PSS_SHA256);
+      Signature signature = Signature.getInstance(V2_SIGNATURE_ALGORITHM);
+      signature.setParameter(pssSpec());
+      signature.initSign(this.key);
+      signature.update(RsaV2Format.signedMessage(header, input));
+      return RsaV2Format.envelope(RsaV2Format.TYPE_SIGNATURE,
+          RsaV2Format.PROFILE_PSS_SHA256, signature.sign());
+    } catch (GeneralSecurityException e) {
+      throw new InvalidEncodingException("RSA v2 signature not supported", e);
+    }
+  }
+
+  private OAEPParameterSpec oaepSpec() {
+    return new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256,
+        PSource.PSpecified.DEFAULT);
+  }
+
+  private PSSParameterSpec pssSpec() {
+    return new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1);
   }
 }

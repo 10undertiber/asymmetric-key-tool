@@ -42,6 +42,15 @@ abstract public class PublicKey extends Key {
     return encryptData(plainText);
   }
 
+  public String encryptV2(String plainText) throws InvalidEncodingException {
+    return Base64.getEncoder().encodeToString(encryptV2(plainText.getBytes(
+        java.nio.charset.StandardCharsets.UTF_8)));
+  }
+
+  public byte[] encryptV2(byte[] plainText) throws InvalidEncodingException {
+    return encryptV2Data(plainText);
+  }
+
   public boolean verify(String input, String output) throws InvalidEncodingException {
     try {
       return verify(input.getBytes(java.nio.charset.StandardCharsets.UTF_8), Base64.getDecoder().decode(output));
@@ -54,7 +63,28 @@ abstract public class PublicKey extends Key {
     return verifyData(input, output);
   }
 
+  public boolean verifyV2(String input, String output) throws InvalidEncodingException {
+    try {
+      return verifyV2(input.getBytes(java.nio.charset.StandardCharsets.UTF_8),
+          Base64.getDecoder().decode(output));
+    } catch (IllegalArgumentException e) {
+      throw new InvalidEncodingException("Signature encoding not valid", e);
+    }
+  }
+
+  public boolean verifyV2(byte[] input, byte[] output) throws InvalidEncodingException {
+    return verifyV2Data(input, output);
+  }
+
   abstract byte[] encryptData(byte[] plainText) throws InvalidEncodingException;
 
   abstract boolean verifyData(byte[] input, byte[] output) throws InvalidEncodingException;
+
+  byte[] encryptV2Data(byte[] plainText) throws InvalidEncodingException {
+    throw new InvalidEncodingException("RSA v2 encryption is not supported by this key");
+  }
+
+  boolean verifyV2Data(byte[] input, byte[] output) throws InvalidEncodingException {
+    throw new InvalidEncodingException("RSA v2 signatures are not supported by this key");
+  }
 }

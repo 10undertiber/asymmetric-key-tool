@@ -45,12 +45,28 @@ final public class AsymmetricKeyPair {
     return this.publicKey.encrypt(plainMessage);
   }
 
+  public String encryptV2(String plainMessage) throws InvalidEncodingException {
+    return this.publicKey.encryptV2(plainMessage);
+  }
+
+  public byte[] encryptV2(byte[] plainMessage) throws InvalidEncodingException {
+    return this.publicKey.encryptV2(plainMessage);
+  }
+
   public String decrypt(String encryptedMessage) throws InvalidEncodingException {
     return this.privateKey.decrypt(encryptedMessage);
   }
 
   public byte[] decrypt(byte[] encryptedMessage) throws InvalidEncodingException {
     return this.privateKey.decrypt(encryptedMessage);
+  }
+
+  public String decryptV2(String encryptedMessage) throws InvalidEncodingException {
+    return this.privateKey.decryptV2(encryptedMessage);
+  }
+
+  public byte[] decryptV2(byte[] encryptedMessage) throws InvalidEncodingException {
+    return this.privateKey.decryptV2(encryptedMessage);
   }
 
   public String sign(String input) throws InvalidEncodingException {
@@ -61,11 +77,27 @@ final public class AsymmetricKeyPair {
     return this.privateKey.sign(input);
   }
 
+  public String signV2(String input) throws InvalidEncodingException {
+    return this.privateKey.signV2(input);
+  }
+
+  public byte[] signV2(byte[] input) throws InvalidEncodingException {
+    return this.privateKey.signV2(input);
+  }
+
   public boolean verify(String input, String output) throws InvalidEncodingException {
     return this.publicKey.verify(input, output);
   }
 
   public boolean verify(byte[] input, byte[] output) throws InvalidEncodingException {
     return this.publicKey.verify(input, output);
+  }
+
+  public boolean verifyV2(String input, String output) throws InvalidEncodingException {
+    return this.publicKey.verifyV2(input, output);
+  }
+
+  public boolean verifyV2(byte[] input, byte[] output) throws InvalidEncodingException {
+    return this.publicKey.verifyV2(input, output);
   }
 }

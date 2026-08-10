@@ -20,5 +20,6 @@
 package com.tenut.asymmetrickeytool;
 
 public enum AsymmetricKeyAlgorithm {
-  ASYMMETRIC_KEY_ALGORITHM_RSA;
+  ASYMMETRIC_KEY_ALGORITHM_RSA,
+  ASYMMETRIC_KEY_ALGORITHM_RSA_V2;
 }

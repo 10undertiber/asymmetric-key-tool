@@ -57,6 +57,7 @@ final public class AsymmetricKeyGenerator {
 
     switch (algorithm) {
       case ASYMMETRIC_KEY_ALGORITHM_RSA:
+      case ASYMMETRIC_KEY_ALGORITHM_RSA_V2:
         return new RSAKeyPairBuilder();
       default:
         throw new UnknownAsymmetricKeyAlgorithmException("Algorithm not found");
